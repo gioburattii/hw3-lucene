@@ -1,0 +1,2 @@
+BM25 è la funzione di ranking predefinita di Lucene. Il punteggio cresce con la frequenza del termine nel documento, ma con un effetto di saturazione,
+e premia i termini rari nella collezione grazie all'inverse document frequency. La lunghezza del documento viene normalizzata.

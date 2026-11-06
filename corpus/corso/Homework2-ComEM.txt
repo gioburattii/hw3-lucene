@@ -1,0 +1,1 @@
+Appunti sulla presentazione dell'homework 2: l'articolo analizza le strategie match, compare e select per l'entity matching con i large language model.

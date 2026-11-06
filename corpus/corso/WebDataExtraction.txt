@@ -1,0 +1,3 @@
+L'estrazione di dati dal web trasforma pagine HTML in dati strutturati.
+I wrapper possono essere scritti a mano oppure appresi automaticamente a partire da pagine generate dallo stesso template.
+Strumenti come XPath e i selettori CSS permettono di individuare gli elementi della pagina.

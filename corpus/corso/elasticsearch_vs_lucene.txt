@@ -1,0 +1,2 @@
+Elasticsearch è un motore di ricerca distribuito costruito sopra Lucene.
+Rispetto alla libreria Lucene usata direttamente, Elasticsearch offre API REST, replica degli indici e distribuzione dei dati su più nodi.

@@ -1,0 +1,3 @@
+Un indice invertito è la struttura dati alla base dei motori di ricerca. Per ogni termine si memorizza una posting list.
+Gli indici possono memorizzare anche le posizioni dei termini, necessarie per rispondere alle phrase query.
+La costruzione dell'indice avviene in segmenti che vengono poi fusi.

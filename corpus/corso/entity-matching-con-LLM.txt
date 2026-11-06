@@ -1,0 +1,3 @@
+Negli ultimi anni i large language model sono stati usati per l'entity matching.
+Le strategie studiate sono tre: match (confrontare una coppia di record), compare (scegliere tra due candidati) e select (scegliere il record giusto in una lista).
+I modelli grandi ottengono buoni risultati senza addestramento, ma il costo delle chiamate è elevato. L'entity resolution con LLM resta un tema di ricerca aperto.

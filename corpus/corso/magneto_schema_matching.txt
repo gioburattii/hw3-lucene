@@ -1,0 +1,2 @@
+Magneto combina modelli linguistici piccoli e grandi per lo schema matching.
+Un modello piccolo genera rapidamente i candidati, mentre un modello grande li riordina. In questo modo si ottiene un buon compromesso tra qualità e costo.

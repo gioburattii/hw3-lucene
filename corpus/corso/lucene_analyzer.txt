@@ -1,0 +1,3 @@
+Apache Lucene è una libreria Java per la ricerca full-text. Un analyzer è composto da un tokenizer e da una catena di filtri.
+Il tokenizer divide il testo in token; i filtri possono portare tutto in minuscolo, eliminare le stopword e applicare lo stemming.
+L'indice invertito associa a ogni termine la lista dei documenti che lo contengono.

@@ -1,0 +1,2 @@
+Note per l'homework 3: indicizzare i file di testo di una cartella usando due campi, il nome del file e il contenuto.
+Scegliere un analyzer adatto a ciascun campo e misurare il tempo di indicizzazione.

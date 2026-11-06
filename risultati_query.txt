@@ -1,0 +1,146 @@
+
+================================================================
+Q1: nome schema matching
+================================================================
+Query Lucene: nome:schema nome:matching
+3 documenti trovati in 11,03 ms
+  1. [1,957] corso/magneto_schema_matching.txt
+       magneto_[schema]_[matching]
+  2. [1,731] corso/SchemaMatching_Valentine-2024.txt
+       [Schema][Matching]_Valentine-2024
+  3. [0,796] corso/entity-matching-con-LLM.txt
+       entity-[matching]-con-LLM
+
+================================================================
+Q2: nome homework
+================================================================
+Query Lucene: nome:homework
+2 documenti trovati in 0,27 ms
+  1. [1,057] corso/homework3_note.txt
+       [homework]3_note
+  2. [0,935] corso/Homework2-ComEM.txt
+       [Homework]2-ComEM
+
+================================================================
+Q3: nome citta
+================================================================
+Query Lucene: nome:citta
+1 documenti trovati in 0,13 ms
+  1. [1,491] viaggi/Città_italiane.txt
+       [Città]_italiane
+
+================================================================
+Q4: nome carbonara
+================================================================
+Query Lucene: nome:carbonara
+1 documenti trovati in 0,13 ms
+  1. [1,491] cucina/RicettaCarbonara.txt
+       Ricetta[Carbonara]
+
+================================================================
+Q5: nome roma 2025
+================================================================
+Query Lucene: nome:roma nome:2025
+3 documenti trovati in 0,31 ms
+  1. [1,216] viaggi/roma_antica.txt
+       [roma]_antica
+  2. [1,146] sport/CalcioSerieA_2025.txt
+       CalcioSerieA_[2025]
+  3. [1,057] sport/maratona_di_roma.txt
+       maratona_di_[roma]
+
+================================================================
+Q6: contenuto "entity resolution"
+================================================================
+Query Lucene: contenuto:"entity resolution"
+3 documenti trovati in 2,65 ms
+  1. [1,529] corso/data_integration_01.txt
+       Le fasi principali sono la scoperta delle sorgenti, lo schema matching, [l'entity resolution] e la fusione dei dati.
+  2. [1,224] corso/EntityResolution_Intro.txt
+       [L'entity resolution], detta anche record linkage o deduplicazione, è il problema di capire quando due record descrivono la stessa entità del mondo reale.
+  3. [1,224] corso/entity-matching-con-LLM.txt
+       [L'entity resolution] con LLM resta un tema di ricerca aperto.
+
+================================================================
+Q7: contenuto indice
+================================================================
+Query Lucene: contenuto:indic
+3 documenti trovati in 0,15 ms
+  1. [1,315] corso/indici_invertiti.txt
+       Un [indice] invertito è la struttura dati alla base dei motori di ricerca. ... La costruzione [dell'indice] avviene in segmenti che vengono poi fusi.
+  2. [0,908] corso/elasticsearch_vs_lucene.txt
+       Rispetto alla libreria Lucene usata direttamente, Elasticsearch offre API REST, replica degli [indici] e distribuzione dei dati su più nodi.
+  3. [0,755] corso/lucene_analyzer.txt
+       [L'indice] invertito associa a ogni termine la lista dei documenti che lo contengono.
+
+================================================================
+Q8: contenuto "ingegneria dei dati"
+================================================================
+Query Lucene: contenuto:"ingegner ? dati"
+2 documenti trovati in 0,22 ms
+  1. [1,515] corso/data_integration_01.txt
+       [L'ingegneria dei dati] studia metodi e strumenti per costruire queste pipeline in modo affidabile.
+  2. [1,444] README_corpus.txt
+       Questo corpus di prova contiene file di testo in italiano su argomenti diversi: il corso di [ingegneria dei dati], la cucina, i viaggi e lo sport.
+
+================================================================
+Q9: contenuto +lucene -elasticsearch
+================================================================
+Query Lucene: +contenuto:lucen -contenuto:elasticsearch
+2 documenti trovati in 0,83 ms
+  1. [0,861] corso/BM25_ranking.txt
+       BM25 è la funzione di ranking predefinita di [Lucene].
+  2. [0,755] corso/lucene_analyzer.txt
+       Apache [Lucene] è una libreria Java per la ricerca full-text.
+
+================================================================
+Q10: contenuto città
+================================================================
+Query Lucene: contenuto:citta
+3 documenti trovati in 0,14 ms
+  1. [1,234] viaggi/Città_italiane.txt
+       Roma, Firenze e Venezia sono le [città] italiane più visitate dai turisti. Ogni [città] ha un centro storico ricco di monumenti; a Roma il Colosseo, a Firenze il Duomo, a Venezia piazza San Marco.
+  2. [1,043] viaggi/weekend-a-Firenze.txt
+       La [citta] si gira facilmente a piedi.
+  3. [0,980] sport/maratona_di_roma.txt
+       La Maratona di Roma attraversa il centro storico della [città], passando davanti al Colosseo e a piazza Venezia.
+
+================================================================
+Q11: contenuto guanciale pecorino
+================================================================
+Query Lucene: contenuto:guancial contenuto:pecorin
+2 documenti trovati in 0,34 ms
+  1. [2,864] cucina/RicettaCarbonara.txt
+       La carbonara si prepara con spaghetti, [guanciale], tuorli d'uovo, [pecorino] romano e pepe nero. Il [guanciale] va rosolato senza olio; i tuorli si mescolano con il [pecorino] e si aggiungono alla pasta fuori dal fuoco.
+  2. [2,449] cucina/ricetta_amatriciana.txt
+       Per l'amatriciana servono bucatini o spaghetti, [guanciale], pomodoro, [pecorino] e peperoncino.
+
+================================================================
+Q12: contenuto "large language model" costo
+================================================================
+Query Lucene: contenuto:"large languag model" contenuto:costo
+3 documenti trovati in 0,50 ms
+  1. [3,598] corso/Homework2-ComEM.txt
+       Appunti sulla presentazione dell'homework 2: l'articolo analizza le strategie match, compare e select per l'entity matching con i [large language model].
+  2. [3,077] corso/entity-matching-con-LLM.txt
+       Negli ultimi anni i [large language model] sono stati usati per l'entity matching. ... I modelli grandi ottengono buoni risultati senza addestramento, ma il [costo] delle chiamate è elevato.
+  3. [1,029] corso/magneto_schema_matching.txt
+       In questo modo si ottiene un buon compromesso tra qualità e [costo].
+
+================================================================
+Q13: contenuto perché codifica
+================================================================
+Query Lucene: contenuto:codific
+1 documenti trovati in 0,14 ms
+  1. [1,679] codifica_latin1.txt
+       Questo file è salvato in ISO-8859-1: perché la [codifica] conta quando si indicizza.
+
+================================================================
+Q14: titolo lucene
+================================================================
+Errore: La query deve iniziare con 'nome' o 'contenuto' (trovato: 'titolo').
+
+================================================================
+Q15: contenuto il di che
+================================================================
+Errore: Nessun termine significativo (forse solo stopword?).

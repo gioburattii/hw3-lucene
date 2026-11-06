@@ -1,0 +1,3 @@
+L'integrazione dei dati ha l'obiettivo di offrire una vista unificata su sorgenti eterogenee.
+Le fasi principali sono la scoperta delle sorgenti, lo schema matching, l'entity resolution e la fusione dei dati.
+L'ingegneria dei dati studia metodi e strumenti per costruire queste pipeline in modo affidabile.

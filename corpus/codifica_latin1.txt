@@ -1,0 +1,1 @@
+Questo file è salvato in ISO-8859-1: perché la codifica conta quando si indicizza.

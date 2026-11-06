@@ -1,0 +1,3 @@
+Lo schema matching consiste nel trovare le corrispondenze tra gli attributi di due schemi, ad esempio tra le colonne di due tabelle.
+Valentine è una suite sperimentale che confronta diversi algoritmi di schema matching su dataset reali e sintetici.
+Le tecniche si basano sui nomi degli attributi, sulle istanze dei dati o su una combinazione delle due.

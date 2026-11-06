@@ -1,0 +1,3 @@
+L'entity resolution, detta anche record linkage o deduplicazione, è il problema di capire quando due record descrivono la stessa entità del mondo reale.
+Ad esempio "Mario Rossi, via Roma 10" e "M. Rossi, v. Roma 10" sono probabilmente la stessa persona.
+Una pipeline tipica comprende blocking, matching e clustering. Il blocking riduce il numero di confronti raggruppando i record simili.
