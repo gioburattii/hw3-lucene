@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>Relazione Homework 3 – Ingegneria dei Dati</title>
+<style>
+  @page { size: A4; margin: 18mm 17mm 18mm 17mm; }
+  body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 10pt; line-height: 1.42; color: #1a1a1a; margin: 0; }
+  h1 { font-size: 18pt; margin: 0 0 2pt 0; }
+  h2 { font-size: 12.5pt; margin: 16pt 0 5pt 0; padding-bottom: 2pt; border-bottom: 1px solid #999; break-after: avoid; }
+  h3 { font-size: 10.5pt; margin: 10pt 0 3pt 0; break-after: avoid; }
+  p { margin: 0 0 6pt 0; text-align: justify; }
+  ul, ol { margin: 0 0 6pt 0; padding-left: 16pt; }
+  li { margin-bottom: 2pt; }
+  code, pre { font-family: Menlo, Consolas, monospace; font-size: 8.4pt; }
+  code { background: #f1f1f1; padding: 0 2pt; border-radius: 2pt; }
+  pre { background: #f5f5f5; border: 1px solid #ddd; padding: 5pt 7pt; margin: 0 0 7pt 0; white-space: pre-wrap; }
+  table { border-collapse: collapse; width: 100%; margin: 4pt 0 8pt 0; font-size: 8.6pt; break-inside: avoid; }
+  th, td { border: 1px solid #bbb; padding: 2.5pt 5pt; text-align: left; vertical-align: top; }
+  th { background: #e9edf2; }
+  td.n, th.n { text-align: right; white-space: nowrap; }
+  tr.tot td { font-weight: bold; background: #f4f4f4; }
+  .head { border-bottom: 2px solid #333; padding-bottom: 7pt; margin-bottom: 8pt; }
+  .head p { margin: 0; text-align: left; }
+  .sub { color: #444; font-size: 10.5pt; }
+  .todo { background: #fff2a8; padding: 0 3pt; font-weight: bold; }
+  .small { font-size: 8.6pt; color: #333; }
+</style>
+</head>
+<body>
+
+<div class="head">
+  <h1>Homework 3 – Indicizzazione e ricerca di file .txt con Lucene</h1>
+  <p class="sub">Ingegneria dei Dati 2026/2027 – Relazione</p>
+  <p style="margin-top:6pt"><b>Gioia Buratti</b> – email: gio.buratti2@stud.uniroma3.it</p>
+  <p>Progetto: <a href="https://github.com/gioburattii/hw3-lucene">https://github.com/gioburattii/hw3-lucene</a></p>
+</div>
+
+<h2>1. Il sistema</h2>
+<p>Il progetto è scritto in Java 21 con Apache Lucene 10.3.2 e si compila con Maven in un unico jar eseguibile.
+Contiene due programmi, richiamabili dallo stesso jar:</p>
+<ul>
+  <li><code>index &lt;cartella&gt; &lt;indice&gt;</code> visita la cartella (sottocartelle comprese), legge ogni file <code>.txt</code>
+      e lo indicizza su due campi: <b>nome</b> (nome del file senza estensione) e <b>contenuto</b> (testo del file).
+      Al termine stampa numero di file, dimensione e tempi;</li>
+  <li><code>search &lt;indice&gt;</code> legge le query da console, interroga l'indice e stampa i primi 10 risultati ordinati
+      per rilevanza (BM25), ciascuno con uno snippet in cui i termini trovati sono evidenziati.</li>
+</ul>
+<p>Una query inizia con la parola chiave <code>nome</code> oppure <code>contenuto</code>, seguita da uno o più elementi:
+un termine semplice (facoltativo: i termini sono in OR e chi ne contiene di più sale in classifica), una
+<code>"frase tra virgolette"</code> (phrase query), <code>+termine</code> (obbligatorio) o <code>-termine</code> (escluso).
+La query viene analizzata con lo stesso analyzer usato per indicizzare quel campo. Ho aggiunto due comandi di servizio:
+<code>batch</code>, che esegue le query scritte in un file, ed <code>eval</code>, che calcola le metriche di valutazione (sezione 6).</p>
+
+<h2>2. Analyzer scelti</h2>
+<h3>Campo nome</h3>
+<p>I nomi di file non sono testo in linguaggio naturale: le parole sono separate da <code>_</code>, <code>-</code>, punti,
+oppure non sono separate affatto (camelCase), e spesso contengono numeri. Lo <code>StandardAnalyzer</code> non va bene:
+il suo tokenizer considera l'underscore parte della parola, quindi <code>Castello_di_Sant'Angelo</code> resta un solo
+token e la ricerca <code>nome castello</code> non lo trova (l'ho verificato: sezione 6). Ho quindi costruito un analyzer su misura:</p>
+<ol>
+  <li><b>PatternTokenizer</b> che spezza su tutto ciò che non è lettera o cifra;</li>
+  <li><b>WordDelimiterGraphFilter</b> che spezza il camelCase e i passaggi lettera/cifra, conservando anche il token originale;</li>
+  <li><b>LowerCaseFilter</b> e <b>ASCIIFoldingFilter</b>, per cercare senza badare a maiuscole e accenti
+      (chi scrive una query spesso non mette gli accenti).</li>
+</ol>
+<p>Non ho usato stopword né stemming: un nome è corto e ogni parola conta (cercare <code>nome "isola di"</code> deve poter usare
+anche «di»). Il prezzo è che singolare e plurale restano distinti; l'effetto è misurato nella sezione 6.</p>
+<table>
+  <tr><th>Nome del file</th><th>Token prodotti</th></tr>
+  <tr><td><code>Castello_di_Sant'Angelo.txt</code></td><td><code>castello, di, sant, angelo</code></td></tr>
+  <tr><td><code>SchemaMatching_Valentine-2024.txt</code></td><td><code>schemamatching, schema, matching, valentine, 2024</code></td></tr>
+  <tr><td><code>homework3_note.txt</code></td><td><code>homework3, homework, 3, note</code></td></tr>
+  <tr><td><code>Città_italiane.txt</code></td><td><code>citta, italiane</code></td></tr>
+</table>
+
+<h3>Campo contenuto</h3>
+<p>I documenti sono in italiano, quindi ho preso come base la catena dell'<code>ItalianAnalyzer</code> di Lucene, con una aggiunta:</p>
+<ol>
+  <li><b>StandardTokenizer</b>: segmentazione in parole secondo le regole Unicode;</li>
+  <li><b>ElisionFilter</b>: toglie gli articoli con apostrofo (<code>l'eruzione → eruzione</code>, <code>dell'Italia → Italia</code>);</li>
+  <li><b>LowerCaseFilter</b>;</li>
+  <li><b>StopFilter</b> con le stopword italiane di Lucene (<code>il, di, che, perché…</code>): sono in quasi tutti i documenti e non aiutano a distinguerli;</li>
+  <li><b>ASCIIFoldingFilter</b> (aggiunto da me): <code>città → citta</code>, così la ricerca funziona con o senza accento;</li>
+  <li><b>ItalianLightStemFilter</b>: stemming leggero, che riporta alla stessa radice singolare e plurale, maschile e femminile
+      (<code>vulcano, vulcani → vulcan</code>).</li>
+</ol>
+<p>Esempio: «L'eruzione dei vulcani più attivi dell'Italia» diventa <code>eruzion, vulcan, attiv, ital</code>.
+Ho preferito lo stemmer leggero a uno più aggressivo perché unisce quasi solo le flessioni della stessa parola.
+Durante la valutazione ho però scoperto un suo limite che non conoscevo: <b>non modifica le parole più corte di 6 lettere</b>,
+quindi <code>cane</code>/<code>cani</code> o <code>razza</code>/<code>razze</code> restano termini diversi. Per capire se convenisse
+cambiarlo l'ho confrontato con lo stemmer Snowball (sezione 6).</p>
+
+<h2>3. Dataset: come è stato costruito</h2>
+<p>All'inizio avevo provato il sistema su 23 file scritti a mano (cartella <code>corpus/</code> del repository), utili per controllare
+i casi particolari degli analyzer ma troppo pochi per misurare tempi e qualità. Ho quindi costruito un corpus più grande con
+<b>voci di Wikipedia in italiano</b>, scelta per tre motivi: i testi sono in italiano come gli analyzer, il titolo della voce
+è un nome di file realistico, e ogni voce porta con sé le <b>categorie</b> assegnate dagli autori di Wikipedia, che posso usare
+come giudizio di rilevanza indipendente dal mio sistema.</p>
+<p>Lo script <code>scripts/build_corpus.py</code> lavora in due passi:</p>
+<ol>
+  <li><b>Scaricamento.</b> Per 17 categorie su argomenti diversi (vulcani, primi piatti, pittori italiani del XVI secolo, linguaggi di
+      programmazione, razze canine, imperatori romani, malattie infettive, fiumi d'Italia, scacchi, dolci, formaggi italiani,
+      dinosauri, premi Nobel per la fisica, castelli d'Italia, vini italiani, opere liriche, tennisti italiani) interroga l'API
+      pubblica di it.wikipedia.org e scarica fino a 400 voci della categoria e delle sue sottocategorie, salvando per ognuna
+      titolo, testo semplice e categorie. L'API accetta poche richieste al minuto dai client anonimi: lo script chiede 50 voci
+      per richiesta e, se riceve l'errore 429, aspetta il tempo indicato dal server. Lo scaricamento ha richiesto circa 12 minuti.</li>
+  <li><b>Creazione dei file.</b> Ogni voce diventa un file <code>&lt;argomento&gt;/&lt;Titolo_della_voce&gt;.txt</code>. Le voci con meno
+      di 500 caratteri (abbozzi) e i duplicati sono scartati. L'argomento <em>non</em> è quello della ricerca con cui la voce è stata
+      trovata, perché scendendo nelle sottocategorie arrivano anche voci poco pertinenti (sotto «Vulcani» si trova anche
+      l'imperatore Caligola): è deciso dalle categorie scritte nella voce, confrontate con un'espressione regolare per
+      argomento (ad esempio una voce è in <code>vulcani</code> se ha una categoria che inizia per «Vulcani», «Stratovulcani», «Caldere»…).
+      Le voci che non corrispondono a nessun argomento vanno nella cartella <code>altro</code> e fanno da «rumore».</li>
+</ol>
+<table>
+  <tr><th>Cartella</th><th class="n">File</th><th>Cartella</th><th class="n">File</th><th>Cartella</th><th class="n">File</th></tr>
+  <tr><td>altro</td><td class="n">1.688</td><td>formaggi</td><td class="n">273</td><td>pittori</td><td class="n">400</td></tr>
+  <tr><td>cani</td><td class="n">396</td><td>imperatori</td><td class="n">102</td><td>primi_piatti</td><td class="n">371</td></tr>
+  <tr><td>castelli</td><td class="n">376</td><td>linguaggi</td><td class="n">54</td><td>scacchi</td><td class="n">348</td></tr>
+  <tr><td>dinosauri</td><td class="n">244</td><td>malattie</td><td class="n">55</td><td>tennisti</td><td class="n">255</td></tr>
+  <tr><td>dolci</td><td class="n">309</td><td>nobel_fisica</td><td class="n">228</td><td>vini</td><td class="n">376</td></tr>
+  <tr><td>fiumi</td><td class="n">267</td><td>opere_liriche</td><td class="n">367</td><td>vulcani</td><td class="n">214</td></tr>
+</table>
+<p>In totale <b>6.323 file, 51,9 MB</b> (54 milioni di caratteri). I file sono molto diversi per lunghezza: da 500 a circa 210.000
+caratteri, mediana 4.074, media 8.534. Il corpus non è nel repository (si ricrea con lo script); l'elenco esatto delle voci usate è
+nel file <code>valutazione/manifest.tsv</code>, perché Wikipedia cambia nel tempo.</p>
+
+<h2>4. File indicizzati e tempi di indicizzazione</h2>
+<p>Misure fatte su un portatile con processore Apple M4, 16 GB di RAM, disco SSD, macOS 15.6 e OpenJDK 21. Il tempo comprende la
+lettura dei file dal disco, l'analisi, la scrittura dell'indice e la chiusura; l'indice viene ricreato da zero a ogni esecuzione.</p>
+<table>
+  <tr><th>Corpus</th><th>Analyzer</th><th class="n">File</th><th class="n">Dimensione</th><th class="n">Tempo totale</th><th class="n">Velocità</th><th class="n">Indice su disco</th></tr>
+  <tr><td>Wikipedia</td><td>scelti (sezione 2)</td><td class="n">6.323</td><td class="n">51,9 MB</td><td class="n"><b>2,56 s</b> (mediana di 5 prove: 3,08 – 2,55 – 2,56 – 2,57 – 2,66)</td><td class="n">≈ 2.470 file/s<br>≈ 20 MB/s</td><td class="n">48 MB</td></tr>
+  <tr><td>Wikipedia</td><td>con stemmer Snowball</td><td class="n">6.323</td><td class="n">51,9 MB</td><td class="n">3,64 s (mediana di 3 prove)</td><td class="n">≈ 1.740 file/s</td><td class="n">47 MB</td></tr>
+  <tr><td>Wikipedia</td><td>StandardAnalyzer</td><td class="n">6.323</td><td class="n">51,9 MB</td><td class="n">2,48 s (1 prova)</td><td class="n">≈ 2.550 file/s</td><td class="n">54 MB</td></tr>
+  <tr><td>23 file a mano</td><td>scelti (sezione 2)</td><td class="n">23</td><td class="n">0,01 MB</td><td class="n">0,11 s</td><td class="n">–</td><td class="n">28 KB</td></tr>
+</table>
+<p>Osservazioni. (1) Quasi tutto il tempo (circa 2,5 s su 2,56) è speso nella lettura e nell'analisi dei documenti; il commit finale
+pesa circa 70 ms. (2) La prima prova è più lenta perché i file non sono ancora nella cache del sistema operativo. (3) Con soli 23 file
+il tempo (0,11 s) è dominato dai costi fissi di avvio e non dice nulla sulla velocità reale: è il motivo per cui serviva un corpus
+più grande. (4) L'indice è grande quasi quanto i testi perché il contenuto è anche memorizzato per poter mostrare gli snippet.
+(5) Lo stemmer Snowball rallenta l'indicizzazione di circa il 40%. Le interrogazioni richiedono pochi millisecondi (tra 0,2 e 10 ms).</p>
+
+<h2>5. Query usate per provare il sistema</h2>
+<p>Le query seguenti (file <code>queries_wiki.txt</code>, risultati completi in <code>risultati_query_wiki.txt</code>) coprono i due campi e
+tutti gli elementi della sintassi. Altre 15 query sul corpus piccolo, pensate per camelCase, accenti e file non UTF-8, sono in <code>queries.txt</code>.</p>
+<table>
+  <tr><th>#</th><th>Query</th><th class="n">Trovati</th><th>Primo risultato</th><th>Cosa verifica</th></tr>
+  <tr><td>1</td><td><code>nome vesuvio</code></td><td class="n">8</td><td>Vesuvio</td><td>termine singolo; il nome più corto è primo</td></tr>
+  <tr><td>2</td><td><code>nome castello aragonese</code></td><td class="n">308</td><td>Castello_Aragonese_(Baia)</td><td>termini in OR: chi li ha entrambi sale in cima</td></tr>
+  <tr><td>3</td><td><code>nome "isola di"</code></td><td class="n">18</td><td>Isola_di_Hawaii</td><td>phrase query con una parola che altrove è stopword</td></tr>
+  <tr><td>4</td><td><code>nome carbonara</code></td><td class="n">1</td><td>Pasta_alla_carbonara</td><td>separazione sugli underscore</td></tr>
+  <tr><td>5</td><td><code>nome +lago -bolsena</code></td><td class="n">17</td><td>Lago_Crater</td><td>termine obbligatorio ed escluso</td></tr>
+  <tr><td>6</td><td><code>nome nobel</code></td><td class="n">1</td><td>Vincitori_del_premio_Nobel_…</td><td>maiuscole; si cerca nel nome del file, non in quello della cartella</td></tr>
+  <tr><td>7</td><td><code>contenuto "seconda guerra mondiale"</code></td><td class="n">266</td><td>Cioccolato_delle_forze_armate_statunitensi</td><td>phrase query</td></tr>
+  <tr><td>8</td><td><code>contenuto città eterna</code></td><td class="n">1.179</td><td>Raffaellino_del_Colle</td><td>accenti; termini in OR</td></tr>
+  <tr><td>9</td><td><code>contenuto vulcano eruzione lava</code></td><td class="n">367</td><td>Stratovulcano</td><td>stemming (trova «vulcani», «eruzioni»)</td></tr>
+  <tr><td>10</td><td><code>contenuto +formaggio +pecora -stagionato</code></td><td class="n">48</td><td>Nera_di_Arbus</td><td>obbligatori ed esclusi</td></tr>
+  <tr><td>11</td><td><code>contenuto "linguaggio di programmazione" python</code></td><td class="n">133</td><td>GNOME_Builder</td><td>frase e termine insieme</td></tr>
+  <tr><td>12</td><td><code>contenuto dell'imperatore Adriano</code></td><td class="n">829</td><td>Adriano</td><td>elisione dell'articolo</td></tr>
+  <tr><td>13</td><td><code>contenuto perché scacco matto</code></td><td class="n">461</td><td>Matto_dell'imbecille</td><td>stopword ignorata («perché»)</td></tr>
+  <tr><td>14</td><td><code>titolo lucene</code></td><td class="n">–</td><td colspan="2">errore segnalato: la query deve iniziare con <code>nome</code> o <code>contenuto</code></td></tr>
+  <tr><td>15</td><td><code>contenuto il di che</code></td><td class="n">–</td><td colspan="2">errore segnalato: la query contiene solo stopword</td></tr>
+</table>
+<p>Due risultati mi hanno fatto riflettere. Nella query 7 il primo documento non è una voce sulla guerra ma una voce breve che ripete
+più volte la frase: BM25 premia i documenti corti in cui il termine è frequente. Nella query 8 «città» è così comune che i 1.179
+risultati dicono poco: in casi così servono i termini obbligatori o le frasi.</p>
+
+<h2>6. Valutazione</h2>
+<h3>Come ho stabilito i documenti rilevanti</h3>
+<p>Per calcolare la recall bisogna sapere, per ogni query, <em>tutti</em> i documenti rilevanti del corpus, anche quelli che il
+sistema non restituisce: con 6.323 file non è possibile leggerli uno per uno. Lo script <code>scripts/build_gold.py</code> costruisce
+quindi il riferimento in modo automatico e <b>senza usare Lucene</b>, con tre criteri, uno per tipo di query:</p>
+<ul>
+  <li><b>query per argomento sul contenuto (C1–C8)</b>: sono rilevanti tutti e soli i file della cartella di quell'argomento, cioè le voci
+      che Wikipedia classifica così. Esempio: per <code>contenuto vulcano eruzione lava cratere</code> i rilevanti sono i 214 file di <code>vulcani/</code>;</li>
+  <li><b>query sul nome (N1–N5)</b>: sono rilevanti i file il cui titolo soddisfa un'espressione regolare in cui ho elencato a mano le forme
+      che considero pertinenti al bisogno informativo. Esempio: per <code>nome castello</code> («voci su castelli») vale <code>\bcastell[oi]\b</code>;</li>
+  <li><b>phrase query sul contenuto (F1–F4)</b>: sono rilevanti i file il cui testo contiene la frase, al singolare o al plurale, cercata con
+      un'espressione regolare su tutti i file (una ricerca «alla grep»).</li>
+</ul>
+<h3>Metriche</h3>
+<p>Per ogni query il comando <code>eval</code> recupera l'intero insieme dei risultati (non solo i primi 10) e calcola:
+<b>precision</b> P (frazione dei restituiti che sono rilevanti), <b>recall</b> R (frazione dei rilevanti che sono restituiti), <b>F1</b>,
+<b>P@10</b> (precision sui primi 10), <b>R@100</b> (recall sui primi 100) e <b>average precision</b> AP (media delle precision misurate
+a ogni rilevante trovato, che premia chi mette i rilevanti in alto). La media delle AP è la MAP.</p>
+
+<h3>Risultati con gli analyzer scelti (6.323 documenti)</h3>
+<table>
+  <tr><th>id</th><th>Query</th><th class="n">Trovati</th><th class="n">Rilevanti</th><th class="n">Giusti</th><th class="n">P</th><th class="n">R</th><th class="n">F1</th><th class="n">P@10</th><th class="n">R@100</th><th class="n">AP</th></tr>
+  <tr><td>N1</td><td><code>nome castello</code></td><td class="n">308</td><td class="n">313</td><td class="n">308</td><td class="n">1,000</td><td class="n">0,984</td><td class="n">0,992</td><td class="n">1,000</td><td class="n">0,319</td><td class="n">0,984</td></tr>
+  <tr><td>N2</td><td><code>nome lago</code></td><td class="n">18</td><td class="n">18</td><td class="n">18</td><td class="n">1,000</td><td class="n">1,000</td><td class="n">1,000</td><td class="n">1,000</td><td class="n">1,000</td><td class="n">1,000</td></tr>
+  <tr><td>N3</td><td><code>nome pecorino</code></td><td class="n">21</td><td class="n">21</td><td class="n">21</td><td class="n">1,000</td><td class="n">1,000</td><td class="n">1,000</td><td class="n">1,000</td><td class="n">1,000</td><td class="n">1,000</td></tr>
+  <tr><td>N4</td><td><code>nome eruzione vesuvio</code></td><td class="n">14</td><td class="n">5</td><td class="n">5</td><td class="n">0,357</td><td class="n">1,000</td><td class="n">0,526</td><td class="n">0,500</td><td class="n">1,000</td><td class="n">0,967</td></tr>
+  <tr><td>N5</td><td><code>nome "isola di"</code></td><td class="n">18</td><td class="n">19</td><td class="n">18</td><td class="n">1,000</td><td class="n">0,947</td><td class="n">0,973</td><td class="n">1,000</td><td class="n">0,947</td><td class="n">0,947</td></tr>
+  <tr><td>C1</td><td><code>contenuto vulcano eruzione lava cratere</code></td><td class="n">399</td><td class="n">214</td><td class="n">204</td><td class="n">0,511</td><td class="n">0,953</td><td class="n">0,666</td><td class="n">1,000</td><td class="n">0,430</td><td class="n">0,834</td></tr>
+  <tr><td>C2</td><td><code>contenuto formaggio latte stagionatura caglio</code></td><td class="n">732</td><td class="n">273</td><td class="n">272</td><td class="n">0,372</td><td class="n">0,996</td><td class="n">0,541</td><td class="n">1,000</td><td class="n">0,366</td><td class="n">0,969</td></tr>
+  <tr><td>C3</td><td><code>contenuto scacchi partita apertura mossa</code></td><td class="n">1.072</td><td class="n">348</td><td class="n">348</td><td class="n">0,325</td><td class="n">1,000</td><td class="n">0,490</td><td class="n">1,000</td><td class="n">0,256</td><td class="n">0,884</td></tr>
+  <tr><td>C4</td><td><code>contenuto imperatore romano senato legioni</code></td><td class="n">1.556</td><td class="n">102</td><td class="n">102</td><td class="n">0,066</td><td class="n">1,000</td><td class="n">0,123</td><td class="n">0,700</td><td class="n">0,490</td><td class="n">0,548</td></tr>
+  <tr><td>C5</td><td><code>contenuto dinosauro fossili cretaceo</code></td><td class="n">409</td><td class="n">244</td><td class="n">244</td><td class="n">0,597</td><td class="n">1,000</td><td class="n">0,747</td><td class="n">0,900</td><td class="n">0,369</td><td class="n">0,891</td></tr>
+  <tr><td>C6</td><td><code>contenuto vino vitigno uve gradazione</code></td><td class="n">626</td><td class="n">376</td><td class="n">365</td><td class="n">0,583</td><td class="n">0,971</td><td class="n">0,729</td><td class="n">1,000</td><td class="n">0,263</td><td class="n">0,921</td></tr>
+  <tr><td>C7</td><td><code>contenuto tennista torneo ATP singolare doppio</code></td><td class="n">897</td><td class="n">255</td><td class="n">254</td><td class="n">0,283</td><td class="n">0,996</td><td class="n">0,441</td><td class="n">1,000</td><td class="n">0,388</td><td class="n">0,986</td></tr>
+  <tr><td>C8</td><td><code>contenuto +razza +cane pelo mantello</code></td><td class="n">359</td><td class="n">396</td><td class="n">355</td><td class="n">0,989</td><td class="n">0,896</td><td class="n">0,940</td><td class="n">1,000</td><td class="n">0,253</td><td class="n">0,896</td></tr>
+  <tr><td>F1</td><td><code>contenuto "premio nobel per la fisica"</code></td><td class="n">216</td><td class="n">216</td><td class="n">216</td><td class="n">1,000</td><td class="n">1,000</td><td class="n">1,000</td><td class="n">1,000</td><td class="n">0,463</td><td class="n">1,000</td></tr>
+  <tr><td>F2</td><td><code>contenuto "seconda guerra mondiale"</code></td><td class="n">266</td><td class="n">266</td><td class="n">266</td><td class="n">1,000</td><td class="n">1,000</td><td class="n">1,000</td><td class="n">1,000</td><td class="n">0,376</td><td class="n">1,000</td></tr>
+  <tr><td>F3</td><td><code>contenuto "linguaggio di programmazione"</code></td><td class="n">108</td><td class="n">108</td><td class="n">108</td><td class="n">1,000</td><td class="n">1,000</td><td class="n">1,000</td><td class="n">1,000</td><td class="n">0,926</td><td class="n">1,000</td></tr>
+  <tr><td>F4</td><td><code>contenuto "denominazione di origine protetta"</code></td><td class="n">66</td><td class="n">66</td><td class="n">66</td><td class="n">1,000</td><td class="n">1,000</td><td class="n">1,000</td><td class="n">1,000</td><td class="n">1,000</td><td class="n">1,000</td></tr>
+  <tr class="tot"><td></td><td>Media su 17 query</td><td class="n"></td><td class="n"></td><td class="n"></td><td class="n">0,711</td><td class="n">0,985</td><td class="n">0,775</td><td class="n">0,947</td><td class="n">0,579</td><td class="n">0,931</td></tr>
+</table>
+<p class="small">R@100 non può superare 100 / (numero di rilevanti): per le query con più di 100 rilevanti un valore basso è inevitabile.</p>
+
+<h3>Lettura dei risultati</h3>
+<ul>
+  <li><b>Query per argomento.</b> La recall è alta (media 0,977) perché i termini sono in OR: basta un termine per essere restituiti. Per lo
+      stesso motivo la precision sull'intero insieme è bassa (media 0,466): molti documenti contengono «partita» o «romano» senza parlare di
+      scacchi o di imperatori. Quello che conta per chi usa il sistema è l'ordinamento, ed è buono: P@10 media 0,95 e AP media 0,866.</li>
+  <li><b>C4 è la query peggiore</b> (AP 0,548): i primi falsi positivi sono «Dinastia dei Severi», «Età giulio-claudia», «Clodio Albino»
+      (un usurpatore). Parlano di imperatori ma non sono voci <em>su un</em> imperatore, quindi il riferimento li considera non rilevanti.</li>
+  <li><b>C8 mostra il limite dello stemmer leggero</b>: con <code>+razza +cane</code> obbligatori si perdono 41 voci su razze canine (recall 0,896).
+      Ho controllato alcune di queste: in «Border terrier», ad esempio, c'è «razza» ma al posto di «cane» compaiono solo «cani» e «canina».
+      Le parole con meno di 6 lettere non vengono ridotte alla radice, quindi «cane» e «cani» sono termini diversi.</li>
+  <li><b>Phrase query.</b> Precision e recall sono 1: lo stemming fa trovare anche «linguaggi di programmazione» e «denominazioni di origine protette».</li>
+  <li><b>Nome.</b> N1 perde 5 file su 313 che nel titolo hanno solo il plurale «Castelli» (nessuno stemming sul nome); N5 perde «Isola d'Ischia»,
+      perché la frase cercata è «isola di». In N4 i 5 file rilevanti sono tutti restituiti e stanno nelle prime 6 posizioni (AP 0,967), ma l'OR
+      restituisce anche 9 file che hanno solo «Vesuvio» o solo «eruzione» (P 0,357).</li>
+</ul>
+
+<h3>Confronto fra analyzer</h3>
+<p>Per capire quanto contano le scelte della sezione 2 ho indicizzato lo stesso corpus altre due volte: con lo <code>StandardAnalyzer</code> su
+entrambi i campi e con lo stemmer Snowball al posto di quello leggero. Le query e il riferimento sono gli stessi.</p>
+<table>
+  <tr><th>Gruppo di query</th><th>Analyzer</th><th class="n">P</th><th class="n">R</th><th class="n">F1</th><th class="n">P@10</th><th class="n">AP (MAP)</th></tr>
+  <tr><td rowspan="2">Nome (5 query)</td><td>scelto (su misura)</td><td class="n">0,871</td><td class="n">0,986</td><td class="n">0,898</td><td class="n">0,900</td><td class="n">0,980</td></tr>
+  <tr><td>StandardAnalyzer</td><td class="n">0,200</td><td class="n">0,010</td><td class="n">0,018</td><td class="n">0,200</td><td class="n">0,010</td></tr>
+  <tr><td rowspan="3">Contenuto (12 query)</td><td>scelto (stemmer leggero)</td><td class="n">0,644</td><td class="n">0,984</td><td class="n">0,723</td><td class="n">0,967</td><td class="n">0,911</td></tr>
+  <tr><td>stemmer Snowball</td><td class="n">0,597</td><td class="n">0,993</td><td class="n">0,673</td><td class="n">0,967</td><td class="n">0,917</td></tr>
+  <tr><td>StandardAnalyzer</td><td class="n">0,683</td><td class="n">0,955</td><td class="n">0,750</td><td class="n">0,983</td><td class="n">0,882</td></tr>
+</table>
+<ul>
+  <li><b>Nome.</b> Con lo StandardAnalyzer la ricerca per nome praticamente non funziona (recall 0,01): i titoli con gli underscore restano
+      un token unico. È la conferma più netta che per questo campo serviva un analyzer dedicato.</li>
+  <li><b>Contenuto, senza stemming.</b> Lo StandardAnalyzer perde recall (0,955 contro 0,984; in F3 trova 90 documenti su 108 perché non
+      riconosce il plurale) e ha una MAP più bassa, ma una precision un po' più alta: lo stemming allarga i risultati.</li>
+  <li><b>Contenuto, Snowball.</b> Risolve il problema delle parole corte (C8: recall da 0,896 a 0,987; C6: da 0,971 a 1) ma è troppo
+      aggressivo in altri casi: in C3 riduce «partita» a «part», la stessa radice di «parte» e «partire», e i documenti restituiti
+      passano da 1.072 a 3.956 (precision da 0,325 a 0,088). In media guadagna pochissimo in MAP (0,917 contro 0,911), perde in
+      precision e rallenta l'indicizzazione del 40%. Ho quindi <b>mantenuto lo stemmer leggero</b>, sapendo che le parole corte
+      vanno cercate nella forma giusta.</li>
+</ul>
+
+<h3>Limiti della valutazione</h3>
+<ul>
+  <li><b>Il riferimento per argomento è incompleto</b>, e questo fa sembrare la precision più bassa di quanto sia. Tra i «falsi positivi»
+      di C1 ci sono «Isola di Stromboli» ed «Eruzione del monte Saint Helens del 1980», tra quelli di C2 «Parmigiano Reggiano», tra quelli di
+      C3 «Re (scacchi)»: sono chiaramente pertinenti, ma le loro categorie su Wikipedia non corrispondono alle mie espressioni regolari e
+      sono finite in <code>altro</code>. Al contrario, alcune voci etichettate come vulcani sono abbozzi su isole che la parola «vulcano» non la
+      contengono nemmeno (es. «Alamagan», descritta come «isola vulcanica»): nessuna ricerca per parole può trovarle.</li>
+  <li><b>Il riferimento va controllato.</b> Alla prima esecuzione F4 aveva precision 0,924: guardando i 5 «errori» ho visto che contenevano
+      «denominazioni di origine protette», al plurale, che la mia espressione regolare non prevedeva. Era sbagliato il riferimento, non il
+      sistema, e l'ho corretto. Senza guardare i singoli errori non lo avrei notato.</li>
+  <li><b>La rilevanza è binaria e decisa da regole</b>, non da una persona che legge i documenti; le query sono 17 e le ho scritte io
+      conoscendo il corpus. I numeri vanno quindi letti come confronto fra configurazioni più che come valori assoluti.</li>
+  <li>Per le phrase query il riferimento è una ricerca testuale della stessa frase: misura se l'indice trova tutte le occorrenze
+      (cosa non scontata, viste tokenizzazione, stopword e stemming), non se il documento «parla» davvero di quell'argomento.</li>
+</ul>
+
+<h2>7. Possibili miglioramenti</h2>
+<p>Aggiungere uno stemming leggero anche sul campo nome, o indicizzare il nome due volte (forma esatta e radice), per non perdere i plurali;
+usare per il contenuto uno stemmer che tratti anche le parole corte senza l'aggressività di Snowball, oppure un dizionario di forme flesse;
+permettere di cercare su entrambi i campi insieme; far giudicare a mano un campione dei risultati per stimare quanto il riferimento
+automatico sottovaluta la precision.</p>
+
+</body>
+</html>

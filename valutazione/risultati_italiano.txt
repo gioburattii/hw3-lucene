@@ -1,0 +1,55 @@
+Indice: 6323 documenti, profilo analyzer "italiano"
+
+id   query                                                trovati  rilev.  giusti       P       R      F1    P@10   R@100      AP
+N1   nome castello                                            308     313     308   1.000   0.984   0.992   1.000   0.319   0.984
+       primi falsi positivi: []
+       rilevanti non trovati: [castelli/Associazione_dei_Castelli_del_Ducato_di_Parma,_Piacenza_e_Pontremoli.txt, castelli/Castelli_della_provincia_di_Piacenza.txt, castelli/Castelli_della_provincia_di_Reggio_Emilia.txt, vini/Castelli_di_Jesi_Verdicchio_Riserva.txt, vini/Verdicchio_dei_Castelli_di_Jesi.txt]
+N2   nome lago                                                 18      18      18   1.000   1.000   1.000   1.000   1.000   1.000
+       primi falsi positivi: []
+       rilevanti non trovati: []
+N3   nome pecorino                                             21      21      21   1.000   1.000   1.000   1.000   1.000   1.000
+       primi falsi positivi: []
+       rilevanti non trovati: []
+N4   nome eruzione vesuvio                                     14       5       5   0.357   1.000   0.526   0.500   1.000   0.967
+       primi falsi positivi: [5. vulcani/Vesuvio.txt, 7. altro/Eruzione_minoica.txt, 8. altro/Parco_nazionale_del_Vesuvio.txt, 9. vulcani/Zona_rossa_del_Vesuvio.txt, 10. altro/Eruzione_del_Krakatoa_del_1883.txt]
+       rilevanti non trovati: []
+N5   nome "isola di"                                           18      19      18   1.000   0.947   0.973   1.000   0.947   0.947
+       primi falsi positivi: []
+       rilevanti non trovati: [vulcani/Isola_d'Ischia.txt]
+C1   contenuto vulcano eruzione lava cratere                  399     214     204   0.511   0.953   0.666   1.000   0.430   0.834
+       primi falsi positivi: [24. altro/Arco_vulcanico_delle_Cascate.txt, 26. altro/Eruzione_del_monte_Saint_Helens_del_1980.txt, 35. altro/Parco_nazionale_del_Vesuvio.txt, 56. altro/Monti_Rossi.txt, 66. altro/Isola_di_Stromboli.txt]
+       rilevanti non trovati: [vulcani/Alamagan.txt, vulcani/Anatahan.txt, vulcani/Guguan.txt, vulcani/Isole_Flegree.txt, vulcani/Monte_Labbro.txt]
+C2   contenuto formaggio latte stagionatura caglio            732     273     272   0.372   0.996   0.541   1.000   0.366   0.969
+       primi falsi positivi: [129. altro/Parmigiano_Reggiano.txt, 172. altro/Museo_del_Parmigiano_Reggiano.txt, 176. primi_piatti/Rigatoni_con_la_pajata.txt, 184. altro/Grana_(formaggio).txt, 191. dolci/Cheesecake.txt]
+       rilevanti non trovati: [formaggi/Ricotta_infornata.txt]
+C3   contenuto scacchi partita apertura mossa                1072     348     348   0.325   1.000   0.490   1.000   0.256   0.884
+       primi falsi positivi: [29. altro/Re_(scacchi).txt, 38. altro/Torre_(scacchi).txt, 41. altro/Controgambetto_Albin.txt, 53. altro/Motore_scacchistico.txt, 59. altro/Shōgi.txt]
+       rilevanti non trovati: []
+C4   contenuto imperatore romano senato legioni              1556     102     102   0.066   1.000   0.123   0.700   0.490   0.548
+       primi falsi positivi: [2. altro/Dinastia_dei_Severi.txt, 4. altro/Lucio_Antonio_Saturnino.txt, 5. altro/Età_giulio-claudia.txt, 15. altro/Clodio_Albino.txt, 23. altro/Alletto.txt]
+       rilevanti non trovati: []
+C5   contenuto dinosauro fossili cretaceo                     409     244     244   0.597   1.000   0.747   0.900   0.369   0.891
+       primi falsi positivi: [10. altro/Titanosauria.txt, 35. altro/Neovenator.txt, 41. altro/Sinosauropteryx.txt, 48. altro/Fukuiraptor_kitadaniensis.txt, 57. altro/Afrovenator_abakensis.txt]
+       rilevanti non trovati: []
+C6   contenuto vino vitigno uve gradazione                    626     376     365   0.583   0.971   0.729   1.000   0.263   0.921
+       primi falsi positivi: [52. vulcani/Isola_di_Pantelleria.txt, 101. altro/Vermut.txt, 150. formaggi/Inbriago.txt, 172. dolci/Cucina_sammarinese.txt, 179. altro/Spritz.txt]
+       rilevanti non trovati: [vini/Atina_(vino).txt, vini/Capriano_del_Colle_(vino).txt, vini/Castel_San_Lorenzo_(vino).txt, vini/Cortese_dell'Alto_Monferrato.txt, vini/Eloro_(vino).txt]
+C7   contenuto tennista torneo ATP singolare doppio           897     255     254   0.283   0.996   0.441   1.000   0.388   0.986
+       primi falsi positivi: [92. scacchi/Boris_Becker.txt, 226. altro/Matteo_Marighella.txt, 247. scacchi/Torneo_di_scacchi.txt, 250. scacchi/Torneo_di_scacchi_di_Hastings.txt, 252. scacchi/Torneo_dei_candidati.txt]
+       rilevanti non trovati: [tennisti/Antonio_Porta.txt]
+C8   contenuto +razza +cane pelo mantello                     359     396     355   0.989   0.896   0.940   1.000   0.253   0.896
+       primi falsi positivi: [288. altro/Molossoidi.txt, 357. altro/Yoshi.txt, 358. altro/Rent_(musical).txt, 359. altro/Ischia_Film_Festival.txt]
+       rilevanti non trovati: [cani/African_hairless_dog.txt, cani/Bedlington_terrier.txt, cani/Border_terrier.txt, cani/Bovari_svizzeri.txt, cani/Braque_Dupuy.txt]
+F1   contenuto "premio nobel per la fisica"                   216     216     216   1.000   1.000   1.000   1.000   0.463   1.000
+       primi falsi positivi: []
+       rilevanti non trovati: []
+F2   contenuto "seconda guerra mondiale"                      266     266     266   1.000   1.000   1.000   1.000   0.376   1.000
+       primi falsi positivi: []
+       rilevanti non trovati: []
+F3   contenuto "linguaggio di programmazione"                 108     108     108   1.000   1.000   1.000   1.000   0.926   1.000
+       primi falsi positivi: []
+       rilevanti non trovati: []
+F4   contenuto "denominazione di origine protetta"             66      66      66   1.000   1.000   1.000   1.000   1.000   1.000
+       primi falsi positivi: []
+       rilevanti non trovati: []
+     MEDIA su 17 query (AP medio = MAP)                                             0.711   0.985   0.775   0.947   0.579   0.931

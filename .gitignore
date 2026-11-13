@@ -1,5 +1,9 @@
 target/
 index/
+index_*/
+# corpus di Wikipedia: non versionato, si ricrea con scripts/build_corpus.py
+corpus_wiki/
+corpus_wiki_raw/
 .DS_Store
 .idea/
 *.iml

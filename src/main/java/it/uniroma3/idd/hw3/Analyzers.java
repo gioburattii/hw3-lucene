@@ -19,11 +19,14 @@ import org.apache.lucene.analysis.it.ItalianAnalyzer;
 import org.apache.lucene.analysis.it.ItalianLightStemFilter;
 import org.apache.lucene.analysis.miscellaneous.ASCIIFoldingFilter;
 import org.apache.lucene.analysis.miscellaneous.ASCIIFoldingFilterFactory;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
 import org.apache.lucene.analysis.util.ElisionFilter;
+import org.tartarus.snowball.ext.ItalianStemmer;
 import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
 import org.apache.lucene.analysis.miscellaneous.WordDelimiterGraphFilterFactory;
 import org.apache.lucene.analysis.pattern.PatternTokenizerFactory;
+import org.apache.lucene.analysis.snowball.SnowballFilter;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 
 /**
@@ -98,6 +101,17 @@ public final class Analyzers {
      * </ol>
      */
     public static Analyzer contenutoAnalyzer() {
+        return contenutoAnalyzer(false);
+    }
+
+    /**
+     * @param snowball se vero, al posto dell'ItalianLightStemFilter usa lo stemmer Snowball per
+     *                 l'italiano. Il light stemmer lascia intatte le parole più corte di 6 lettere
+     *                 ({@code cane} e {@code cani} restano termini diversi); Snowball riduce anche
+     *                 quelle ({@code cane, cani → can}) ma è più aggressivo. Usato per confronto
+     *                 nella valutazione (profilo {@value #PROFILE_SNOWBALL}).
+     */
+    public static Analyzer contenutoAnalyzer(boolean snowball) {
         return new Analyzer() {
             @Override
             protected TokenStreamComponents createComponents(String fieldName) {
@@ -105,8 +119,14 @@ public final class Analyzers {
                 TokenStream result = new ElisionFilter(source, ARTICOLI);
                 result = new LowerCaseFilter(result);
                 result = new StopFilter(result, ItalianAnalyzer.getDefaultStopSet());
-                result = new ASCIIFoldingFilter(result);
-                result = new ItalianLightStemFilter(result);
+                if (snowball) {
+                    // Snowball si aspetta le lettere accentate: il folding va fatto dopo lo stemming.
+                    result = new SnowballFilter(result, new ItalianStemmer());
+                    result = new ASCIIFoldingFilter(result);
+                } else {
+                    result = new ASCIIFoldingFilter(result);
+                    result = new ItalianLightStemFilter(result);
+                }
                 return new TokenStreamComponents(source, result);
             }
 
@@ -117,11 +137,34 @@ public final class Analyzers {
         };
     }
 
+    /** Profilo predefinito: analyzer su misura per nomi di file e per testo in italiano. */
+    public static final String PROFILE_ITALIANO = "italiano";
+    /** Profilo di confronto: come "italiano", ma con lo stemmer Snowball sul contenuto. */
+    public static final String PROFILE_SNOWBALL = "snowball";
+    /** Profilo di confronto: StandardAnalyzer (solo tokenizzazione e minuscole) su entrambi i campi. */
+    public static final String PROFILE_STANDARD = "standard";
+
     /** Analyzer complessivo: sceglie l'analyzer giusto in base al nome del campo. */
     public static Analyzer perField() {
-        return new PerFieldAnalyzerWrapper(
-                contenutoAnalyzer(),
-                Map.of(FIELD_NOME, nomeAnalyzer()));
+        return perField(PROFILE_ITALIANO);
+    }
+
+    /**
+     * Come {@link #perField()}, ma permette di scegliere anche i profili di confronto,
+     * usati solo nella valutazione per misurare quanto contano le scelte fatte sugli analyzer.
+     */
+    public static Analyzer perField(String profile) {
+        return switch (profile) {
+            case PROFILE_ITALIANO -> new PerFieldAnalyzerWrapper(
+                    contenutoAnalyzer(),
+                    Map.of(FIELD_NOME, nomeAnalyzer()));
+            case PROFILE_SNOWBALL -> new PerFieldAnalyzerWrapper(
+                    contenutoAnalyzer(true),
+                    Map.of(FIELD_NOME, nomeAnalyzer()));
+            case PROFILE_STANDARD -> new StandardAnalyzer();
+            default -> throw new IllegalArgumentException(
+                    "Profilo sconosciuto: " + profile + " (usare italiano, snowball oppure standard)");
+        };
     }
 
     /** Restituisce i token prodotti da un analyzer: utile per capire e documentare le scelte. */

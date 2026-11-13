@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
@@ -29,13 +30,17 @@ public final class Searcher implements Closeable {
     }
 
     private final DirectoryReader reader;
+    private final String profile;
     private final IndexSearcher searcher;
     private final SimpleQueryParser parser;
     private final UnifiedHighlighter highlighter;
 
     public Searcher(Path indexDir) throws IOException {
-        Analyzer analyzer = Analyzers.perField();
         this.reader = DirectoryReader.open(FSDirectory.open(indexDir));
+        // Stessi analyzer usati in indicizzazione (il profilo è salvato nei metadati dell'indice).
+        this.profile = reader.getIndexCommit().getUserData()
+                .getOrDefault(Indexer.COMMIT_KEY_PROFILE, Analyzers.PROFILE_ITALIANO);
+        Analyzer analyzer = Analyzers.perField(profile);
         this.searcher = new IndexSearcher(reader);   // similarità di default: BM25
         this.parser = new SimpleQueryParser(analyzer);
         this.highlighter = UnifiedHighlighter.builder(searcher, analyzer)
@@ -45,6 +50,25 @@ public final class Searcher implements Closeable {
 
     public int numDocs() {
         return reader.numDocs();
+    }
+
+    public String profile() {
+        return profile;
+    }
+
+    /**
+     * Percorsi di TUTTI i documenti che soddisfano la query, in ordine di rilevanza e senza snippet.
+     * Serve alla valutazione: per calcolare la recall bisogna guardare l'intero insieme dei risultati.
+     */
+    public List<String> searchAll(String input) throws IOException, SimpleQueryParser.QuerySyntaxException {
+        SimpleQueryParser.ParsedQuery pq = parser.parse(input);
+        TopDocs top = searcher.search(pq.query(), Math.max(1, reader.numDocs()));
+        StoredFields stored = searcher.storedFields();
+        List<String> paths = new ArrayList<>(top.scoreDocs.length);
+        for (ScoreDoc sd : top.scoreDocs) {
+            paths.add(stored.document(sd.doc, Set.of(Analyzers.FIELD_PATH)).get(Analyzers.FIELD_PATH));
+        }
+        return paths;
     }
 
     public Result search(String input, int k) throws IOException, SimpleQueryParser.QuerySyntaxException {

@@ -76,4 +76,29 @@ class Hw3Test {
         assertThrows(SimpleQueryParser.QuerySyntaxException.class, () -> p.parse("contenuto il di"));
         assertThrows(SimpleQueryParser.QuerySyntaxException.class, () -> p.parse("contenuto -roma"));
     }
+
+    @Test
+    void metricheDiValutazione() {
+        // classifica: R, N, R, N  -  rilevanti: a, c, z (z non viene trovato)
+        Evaluator.Metrics m = Evaluator.evaluate(List.of("a", "b", "c", "d"), java.util.Set.of("a", "c", "z"));
+        assertEquals(2, m.hits());
+        assertEquals(0.5, m.precision(), 1e-9);
+        assertEquals(2.0 / 3, m.recall(), 1e-9);
+        assertEquals(0.5, m.pAt10(), 1e-9);
+        assertEquals((1.0 + 2.0 / 3) / 3, m.avgPrecision(), 1e-9);
+    }
+
+    @Test
+    void profiloStandardSalvatoNellIndice() throws Exception {
+        Path std = tmp.resolve("index-standard");
+        Indexer.index(tmp.resolve("docs"), std, Analyzers.PROFILE_STANDARD);
+        try (Searcher s = new Searcher(std)) {
+            assertEquals(Analyzers.PROFILE_STANDARD, s.profile());
+            // senza stemming "indici" non trova "indice"
+            assertTrue(s.searchAll("contenuto indici").isEmpty());
+        }
+        try (Searcher s = new Searcher(index)) {
+            assertEquals(1, s.searchAll("contenuto indici").size());
+        }
+    }
 }

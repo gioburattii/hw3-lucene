@@ -15,6 +15,7 @@ import java.util.List;
  *   index   &lt;cartella-documenti&gt; &lt;cartella-indice&gt;   crea l'indice
  *   search  &lt;cartella-indice&gt;                        legge le query da console
  *   batch   &lt;cartella-indice&gt; &lt;file-query&gt;          esegue le query di un file (una per riga)
+ *   eval    &lt;cartella-indice&gt; &lt;query.tsv&gt; &lt;rilevanti.tsv&gt;  calcola precision, recall, AP
  *   analyze &lt;nome|contenuto&gt; &lt;testo...&gt;              mostra i token prodotti dall'analyzer
  * </pre>
  */
@@ -36,7 +37,9 @@ public final class Main {
                 Path docs = Path.of(args[1]);
                 Path index = Path.of(args[2]);
                 System.out.println("Indicizzazione di " + docs.toAbsolutePath() + " ...");
-                Indexer.Stats stats = Indexer.index(docs, index);
+                String profile = args.length > 3 ? args[3] : Analyzers.PROFILE_ITALIANO;
+                Indexer.Stats stats = Indexer.index(docs, index, profile);
+                System.out.println("Profilo analyzer:     " + profile);
                 System.out.println(stats);
                 System.out.println("Indice salvato in " + index.toAbsolutePath());
             }
@@ -47,6 +50,13 @@ public final class Main {
             case "batch" -> {
                 require(args, 3);
                 batch(Path.of(args[1]), Path.of(args[2]));
+            }
+            case "eval" -> {
+                require(args, 4);
+                try (Searcher searcher = new Searcher(Path.of(args[1]))) {
+                    boolean details = args.length > 4 && args[4].equals("dettagli");
+                    Evaluator.run(searcher, Path.of(args[2]), Path.of(args[3]), System.out, details);
+                }
             }
             case "analyze" -> {
                 require(args, 3);
@@ -110,9 +120,10 @@ public final class Main {
     private static void usage() {
         System.out.println("""
                 Uso:
-                  java -jar hw3-lucene.jar index   <cartella-documenti> <cartella-indice>
+                  java -jar hw3-lucene.jar index   <cartella-documenti> <cartella-indice> [italiano|snowball|standard]
                   java -jar hw3-lucene.jar search  <cartella-indice>
                   java -jar hw3-lucene.jar batch   <cartella-indice> <file-query>
+                  java -jar hw3-lucene.jar eval    <cartella-indice> <query.tsv> <rilevanti.tsv> [dettagli]
                   java -jar hw3-lucene.jar analyze <nome|contenuto> <testo...>
                 """);
     }

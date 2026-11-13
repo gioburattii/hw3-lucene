@@ -1,0 +1,308 @@
+
+================================================================
+Q1: nome vesuvio
+================================================================
+Query Lucene: nome:vesuvio
+8 documenti trovati in 8,80 ms
+  1. [4,002] vulcani/Vesuvio.txt
+       [Vesuvio]
+  2. [2,441] altro/Parco_nazionale_del_Vesuvio.txt
+       Parco_nazionale_del_[Vesuvio]
+  3. [2,441] vulcani/Zona_rossa_del_Vesuvio.txt
+       Zona_rossa_del_[Vesuvio]
+  4. [2,160] vulcani/Eruzione_del_Vesuvio_del_1631.txt
+       Eruzione_del_[Vesuvio]_del_1631
+  5. [2,160] vulcani/Eruzione_del_Vesuvio_del_1906.txt
+       Eruzione_del_[Vesuvio]_del_1906
+  6. [2,160] vulcani/Eruzione_del_Vesuvio_del_1944.txt
+       Eruzione_del_[Vesuvio]_del_1944
+  7. [2,160] vulcani/Eruzione_del_Vesuvio_del_79.txt
+       Eruzione_del_[Vesuvio]_del_79
+  8. [1,756] vulcani/Data_dell'eruzione_del_Vesuvio_del_79.txt
+       Data_dell'eruzione_del_[Vesuvio]_del_79
+
+================================================================
+Q2: nome castello aragonese
+================================================================
+Query Lucene: nome:castello nome:aragonese
+308 documenti trovati in 9,36 ms
+  1. [4,824] castelli/Castello_Aragonese_(Baia).txt
+       [Castello]_[Aragonese]_(Baia)
+  2. [1,507] altro/Castello_Estense.txt
+       [Castello]_Estense
+  3. [1,507] altro/Castello_Sforzesco.txt
+       [Castello]_Sforzesco
+  4. [1,507] castelli/Castello_Avogadro.txt
+       [Castello]_Avogadro
+  5. [1,507] castelli/Castello_Beccaria.txt
+       [Castello]_Beccaria
+  6. [1,507] castelli/Castello_Bonoris.txt
+       [Castello]_Bonoris
+  7. [1,507] castelli/Castello_Durini.txt
+       [Castello]_Durini
+  8. [1,507] castelli/Castello_Ginami.txt
+       [Castello]_Ginami
+  9. [1,507] castelli/Castello_Grumello.txt
+       [Castello]_Grumello
+ 10. [1,507] castelli/Castello_Malvasia.txt
+       [Castello]_Malvasia
+
+================================================================
+Q3: nome "isola di"
+================================================================
+Query Lucene: nome:"isola di"
+18 documenti trovati in 3,04 ms
+  1. [2,990] altro/Isola_di_Hawaii.txt
+       [Isola_di]_Hawaii
+  2. [2,990] altro/Isola_di_Pasqua.txt
+       [Isola_di]_Pasqua
+  3. [2,990] altro/Isola_di_Stromboli.txt
+       [Isola_di]_Stromboli
+  4. [2,990] vulcani/Isola_di_Basiluzzo.txt
+       [Isola_di]_Basiluzzo
+  5. [2,990] vulcani/Isola_di_Linosa.txt
+       [Isola_di]_Linosa
+  6. [2,990] vulcani/Isola_di_Lipari.txt
+       [Isola_di]_Lipari
+  7. [2,990] vulcani/Isola_di_Nisida.txt
+       [Isola_di]_Nisida
+  8. [2,990] vulcani/Isola_di_Panarea.txt
+       [Isola_di]_Panarea
+  9. [2,990] vulcani/Isola_di_Pantelleria.txt
+       [Isola_di]_Pantelleria
+ 10. [2,990] vulcani/Isola_di_Salina.txt
+       [Isola_di]_Salina
+
+================================================================
+Q4: nome carbonara
+================================================================
+Query Lucene: nome:carbonara
+1 documenti trovati in 0,27 ms
+  1. [3,542] primi_piatti/Pasta_alla_carbonara.txt
+       Pasta_alla_[carbonara]
+
+================================================================
+Q5: nome +lago -bolsena
+================================================================
+Query Lucene: +nome:lago -nome:bolsena
+17 documenti trovati in 1,28 ms
+  1. [2,911] altro/Lago_Crater.txt
+       [Lago]_Crater
+  2. [2,911] altro/Lago_Fusaro.txt
+       [Lago]_Fusaro
+  3. [2,911] altro/Lago_Taupo.txt
+       [Lago]_Taupo
+  4. [2,911] vulcani/Lago_Albano.txt
+       [Lago]_Albano
+  5. [2,911] vulcani/Lago_Toba.txt
+       [Lago]_Toba
+  6. [2,476] altro/Lago_di_Bientina.txt
+       [Lago]_di_Bientina
+  7. [2,476] altro/Lago_di_Lucrino.txt
+       [Lago]_di_Lucrino
+  8. [2,476] altro/Lago_di_Stramentizzo.txt
+       [Lago]_di_Stramentizzo
+  9. [2,476] vulcani/Lago_d'Averno.txt
+       [Lago]_d'Averno
+ 10. [2,476] vulcani/Lago_di_Bracciano.txt
+       [Lago]_di_Bracciano
+
+================================================================
+Q6: nome nobel
+================================================================
+Query Lucene: nome:nobel
+1 documenti trovati in 0,18 ms
+  1. [2,217] nobel_fisica/Vincitori_del_premio_Nobel_per_la_fisica.txt
+       Vincitori_del_premio_[Nobel]_per_la_fisica
+
+================================================================
+Q7: contenuto "seconda guerra mondiale"
+================================================================
+Query Lucene: contenuto:"second guerr mondial"
+266 documenti trovati in 9,06 ms
+  1. [3,429] altro/Cioccolato_delle_forze_armate_statunitensi.txt
+       Entro la fine della [Seconda guerra mondiale], l'intero impianto della Hershey stava producendo barrette al ritmo di 24 milioni alla settimana. ... La produzione della barretta della razione D fu interrotta alla fine del...
+  2. [3,275] tennisti/Stefano_Mangold.txt
+       Uomo di grande cultura, bilaureato (giurisprudenza ed economia), dopo la [Seconda guerra mondiale] giocò ancora qualche incontro di prima categoria, ma fu principalmente incaricato di riorganizzare il CONI dell'Alta Ital...
+  3. [3,194] nobel_fisica/John_Douglas_Cockcroft.txt
+       Durante la [seconda guerra mondiale] ebbe una parte di primo piano nello sviluppo del radar e nella organizzazione della difesa aerea. ... B.P.Boschesi – Il chi è della [Seconda Guerra Mondiale] – Mondadori Editore, 1975...
+  4. [3,156] cani/Shiba_(razza_canina).txt
+       Nel 1932 viene fondato in Giappone il Nihon Ken Hozonkai, chiamato anche Nippo (associazione per la conservazione del cane giapponese), che riconoscerà nel 1936 lo shiba come monumento nazionale, poiché durante la [secon...
+  5. [3,118] scacchi/Olimpiadi_degli_scacchi_del_1939.txt
+       Si disputarono dal 24 agosto al 19 settembre a Buenos Aires, e furono profondamente influenzate dallo scoppio della [seconda guerra mondiale], che portò al ritiro della squadra inglese e al mancato svolgimento di sei par...
+  6. [3,045] nobel_fisica/Shin'ichirō_Tomonaga.txt
+       Ritornò in Giappone a causa dell'inizio della [seconda guerra mondiale], ma finì il suo dottorato continuando gli studi sui materiali nucleari che già aveva iniziato a Lipsia. ... Durante la [seconda guerra mondiale] si ...
+  7. [3,010] tennisti/Carlo_Sada_(tennista).txt
+       Tennista mancino vide la carriera agonistica fortemente condizionata dallo scoppio della [seconda guerra mondiale].
+  8. [2,993] scacchi/Campionato_jugoslavo_di_scacchi.txt
+       Depo la [seconda guerra mondiale] fu fondata la Federazione jugoslava si scacchi, che incaricò il Comitato di scacchi per corrispondenza di organizzare i campionati nazionali di questa modalità. ^ www.rogerpaige.uk /tabl...
+  9. [2,993] tennisti/Valentino_Taroni.txt
+       Presente agli internazionali di Francia nel 1934, 1937 e 1938, si ritirò dalle competizioni allo scoppio della [seconda guerra mondiale].
+ 10. [2,926] altro/Fosso_Reale_(canale).txt
+       Durante la [seconda guerra mondiale], durante l'avanzata degli Alleati da sud verso nord, segnò per alcuni giorni la linea del fronte anglo-americano/tedesco-italiano.
+
+================================================================
+Q8: contenuto città eterna
+================================================================
+Query Lucene: contenuto:citta contenuto:etern
+1179 documenti trovati in 2,12 ms
+  1. [4,195] pittori/Raffaellino_del_Colle.txt
+       Raffaellino andò a [Città] di Castello, nei pressi della sua [città] natale, dove trovò lavoro dipingendo pale di altare per le principali chiese, quest'oggi si trovano in gran parte presso la Galleria d'Arte Municipale ...
+  2. [3,772] opere_liriche/Aureliano_in_Palmira.txt
+       La scena si svolge nella [città] di Palmira e nei suoi dintorni, nell'anno 274. ... Arsace impegna le truppe persiane nella difesa della [città].
+  3. [3,659] pittori/Marco_Palmezzano.txt
+       Negli ultimi anni Palmezzano lavorò nella sua [città] natale, a Faenza e nelle valli che conducono a Firenze, a Cesena, a Ravenna. ... Nel 2006 la sua [città] natale ha voluto onorarlo dedicandogli una grande mostra mono...
+  4. [3,489] pittori/Ferraù_Fenzoni.txt
+       Viene chiamato anche "Il Faenzone" dalla sua [città] natale. ... Nella Pinacoteca civica di Forlì, invece, si trova la tela Il Padre [Eterno] in mezzo agli angeli.
+  5. [3,315] pittori/Ventura_Salimbeni.txt
+       Salimbeni si vide commissionare nel 1603 altri affreschi riguardanti Scene dei santi Quirico e Giulitta nella omonima chiesa senese, una delle più antiche della [città]. ... Tra il 1607 e il 1609 lavora a Pisa dove dipin...
+  6. [3,280] opere_liriche/Les_Troyens.txt
+       Rimasta sola, Didone progetta il suicidio e dà l'addio alla [città] (Aria: Adieu, fière cité). ... N. 4 - Marcia ed Inno Dei protettori della [città] [eterna] (Coro) N. 5 - Combattimento col cesto N. 6 - Pantomima Androm...
+  7. [3,157] opere_liriche/Maria_de_Rudenz.txt
+       Ma, a Roma, Corrado teme che Maria gli sia infedele, e la abbandona nelle catacombe della [città], credendola morta. ... Sinfonia N. 1 - Introduzione e Cavatina di Corrado Laude [all'eterno] Amor primiero - Ah!
+  8. [3,127] pittori/Alessandro_Maganza.txt
+       Tornato nella [città] berica, avviò una fiorente bottega assieme ai suoi quattro figli maschi (Giovanni Battista il Giovane, nato nel 1577, Marcantonio, nato nel 1578, Girolamo, nato nel 1586 e Vincenzo, nato tra il 1586...
+  9. [3,117] pittori/Perugino.txt
+       Contrariamente a quanto afferma Vasari, la famiglia Vannucci era una delle più importanti e ricche di [Città] della Pieve. ... Nel 1469 un primo documento lo ricorda come di ritorno a [Città] della Pieve per pagare la ta...
+ 10. [2,981] opere_liriche/Belisario_(opera).txt
+       Alamiro, sconvolto e pieno di rancore verso la [città] e l'impero che ha trattato così il suo eroe, giura vendetta e parte via dalla [città]. ... Nella [città] assediata, Giustiniano riceve Antonina, che, sconvolta dal r...
+
+================================================================
+Q9: contenuto vulcano eruzione lava
+================================================================
+Query Lucene: contenuto:vulcan contenuto:eruzion contenuto:lava
+367 documenti trovati in 1,88 ms
+  1. [9,341] vulcani/Stratovulcano.txt
+       A differenza dei [vulcani] a scudo, gli stratovulcani sono caratterizzati da pendii piuttosto ripidi (fino a 45°) e da periodiche [eruzioni] di tipo esplosivo. ... La [lava] emessa da uno stratovulcano può derivare da: u...
+  2. [9,319] vulcani/Vulcano_subglaciale.txt
+       Un [vulcano] subglaciale, anche noto come glaciovulcano, è una forma vulcanica prodotta dalle [eruzioni] subglaciali o dalle [eruzioni] sotto la superficie di un ghiacciaio o di un inlandsis che viene dunque fuso in un l...
+  3. [9,280] vulcani/Monte_Mayon.txt
+       Attualmente, il [vulcano] è in fase di [eruzione]. ... La [lava] scorreva veloce ma non come scorreva durante [l'eruzione] del 1766.
+  4. [9,278] vulcani/Tolbačik.txt
+       Fino [all'eruzione] del 1975 era presente un cratere di 300 m di diametro, poi riempito di [lava] durante [l'eruzione]. ... [L'eruzione] creò diversi nuovi coni di scorie e, in termini di volume di [lava] eruttato, fu la...
+  5. [9,244] vulcani/Kīlauea.txt
+       Ad ogni [eruzione], la [lava] del [vulcano] viene sotterrata dai flussi lavici successivi; questo fatto comprime sempre più la [lava] fino a che la sua densità pareggi quella del magma. ... Inoltre ad ogni [eruzione] la ...
+  6. [9,241] vulcani/Kizimen.txt
+       Il [vulcano] è particolarmente attivo e si hanno testimonianze dirette di [eruzioni] nel 1928-1929, 2010 e 2013. ... Depositi di [lava] a seguito di [eruzioni] continuarono per altri 700 anni circa.
+  7. [9,218] vulcani/Vulcano_Newberry.txt
+       Il [vulcano] Newberry si originò circa 600.000 anni fa e da allora riversò diverse migliaia di [eruzioni]. ... Come risultato [dell'eruzione] a lui dovuta che creò la caldera, il Newberry ha un profilo orizzontale, tipic...
+  8. [9,074] vulcani/Eruzione_del_Vesuvio_del_1944.txt
+       [L'eruzione] del Vesuvio del 1944 è l'ultima sinora registrata per il [vulcano] campano; è avvenuta nel corso della seconda guerra mondiale. Il 6 gennaio 1944 una frattura avvenuta sul fianco del conetto del [vulcano] de...
+  9. [9,050] vulcani/Vulcano_del_lago_Medicine.txt
+       Il monumento nazionale di [Lava] Beds ([Lava] Beds National Monument) si trova sul fianco nord-est del [vulcano]. ... Otto [eruzioni] produssero circa 5,3 km³ di [lava] basaltica durante un intervallo di tempo di poche c...
+ 10. [9,026] vulcani/Vulcano_sottomarino.txt
+       Ma ancor prima, nel 1649-1650, una [eruzione] di tipo esplosivo del Kolumbo, un [vulcano] sottomarino del Mare Egeo, uccise 70 abitanti della vicina isola di Santorini, svelando drammaticamente l'esistenza di [vulcani] a...
+
+================================================================
+Q10: contenuto +formaggio +pecora -stagionato
+================================================================
+Query Lucene: +contenuto:formagg +contenuto:pecor -contenuto:stagionat
+48 documenti trovati in 2,96 ms
+  1. [5,753] formaggi/Nera_di_Arbus.txt
+       La [pecora] Nera di Arbus è una razza ovina autoctona presente in Sardegna. ... Si tratta di [formaggi] a breve, semi e lunga stagionatura, ottenuti dal latte delle [pecore] nere di Arbus.
+  2. [5,500] formaggi/Pecorino_di_Carmasciano.txt
+       Il pecorino di Carmasciano, meglio conosciuto semplicemente come "Carmasciano", è un [formaggio] prodotto con il latte di [pecora] appartenenti ad alcune razze che meglio si sono adattate al clima dell'area, una delle ra...
+  3. [5,479] formaggi/Vastedda_della_Valle_del_Belice.txt
+       La Vastedda della Valle del Belice è un [formaggio] italiano a denominazione di origine protetta, di latte di [pecora] a pasta filata, ottenuto con latte ovino intero, crudo, ad acidità naturale di fermentazione, di [pec...
+  4. [5,365] formaggi/Pecorino_bagnolese.txt
+       Il pecorino bagnolese è un [formaggio], ricavato dal latte di [pecora], prodotto sull'altopiano di Laceno in Irpinia. ... URL consultato il 26 Marzo 2018. ^ [Pecora] bagnolese, su pecorinobagnolese.com.
+  5. [5,315] formaggi/Ricotta_ovina_di_Arischia.txt
+       Questa voce sugli argomenti Abruzzo e [Formaggi] è solo un abbozzo. ... La ricotta ovina di Arischia è un [formaggio] fresco di [pecora], prodotto in Abruzzo ad Arischia, frazione di l'Aquila; fa parte dei Prodotti agroa...
+  6. [5,299] formaggi/Ricotta_di_pecora.txt
+       Viene prodotta con siero di latte di [pecora], latte ovino, sale, ottenuta dall'ebollizione del siero del [formaggio]. ... Giorgio Ottogalli, Atlante dei [formaggi], Hoepli Editore, 2001, Milano.
+  7. [5,298] formaggi/Casciotta_d'Urbino.txt
+       [Formaggio] realizzato sin dall'antichità, era il [formaggio] preferito da Michelangelo e da papa Clemente XIV. ... Per mantenerne alto il livello qualitativo incoraggiarono l'utilizzo del latte delle locali [pecore], mi...
+  8. [5,198] formaggi/Liptauer.txt
+       Il Liptauer è un [formaggio] spalmabile piccante fatto con [formaggio] di latte di [pecora], [formaggio] di capra, quark o ricotta. ... Ricotta, [formaggio] quark, caprino a pasta molle o il pecorino sono tutti adatti a ...
+  9. [5,163] formaggi/Formaggi_sardi.txt
+       Durante il periodo dei quattro regni dall'Isola ne venivano esportate diverse varietà tra le quali il Sardesco, il [formaggio] di Torres, il [formaggio] bianco di Arborea, il [formaggio] di Gallura. ... I [formaggi] ovin...
+ 10. [5,161] formaggi/Pecorino_di_Norcia_del_pastore.txt
+       Il pecorino di Norcia del pastore, o tradizionalmente pecorino di Norcia, è un [formaggio] prodotto con latte di [pecora] e prodotto tipico umbro. ... Viene prodotto con latte intero di [pecora].
+
+================================================================
+Q11: contenuto "linguaggio di programmazione" python
+================================================================
+Query Lucene: contenuto:"linguagg ? programmazion" contenuto:python
+133 documenti trovati in 2,36 ms
+  1. [8,745] altro/GNOME_Builder.txt
+       Di seguito alcune delle funzionalità: Supporto integrato per GNOME Devhelp; Il sistema di controllo della versione git può essere utilizzato per evidenziare aggiunte e modifiche al codice; Supporto per lo sviluppo di app...
+  2. [8,727] linguaggi/Linguaggio_di_scripting.txt
+       Al 2020, secondo l'indice TIOBE, i linguaggi di scripting costituiscono circa un terzo dei [linguaggi di programmazione] più diffusi al mondo. ... Un considerevole numero di linguaggi sono stati progettati per rimpiazzar...
+  3. [8,439] linguaggi/Linguaggio_di_programmazione.txt
+       La teoria dei [linguaggi di programmazione] è il sottocampo dell'informatica che studia la progettazione, l'implementazione, l'analisi, la caratterizzazione e la classificazione dei [linguaggi di programmazione]. ... Vi ...
+  4. [8,436] altro/Python.txt
+       [Python] è un [linguaggio di programmazione] ad alto livello, orientato a oggetti, adatto, tra gli altri usi, a sviluppare applicazioni distribuite, scripting, computazione numerica e system testing. ... [Python] dispone...
+  5. [8,319] altro/Umbrello_UML_Modeller.txt
+       Può importare codice C++, IDL, Ada, [Python], e Java (le versioni precedenti alle 1.5.1, non supportano direttamente Java ma è possibile utilizzare java2xmi) ed esportarlo in vari [linguaggi di programmazione]. ... C++ J...
+  6. [8,033] altro/LLVM.txt
+       Un front-end alternativo per [linguaggi di programmazione] simili al C è attualmente in sviluppo sotto il nome di clang. ... LLVM utilizza un proprio set di istruzioni indipendente dai [linguaggi di programmazione].
+  7. [8,007] linguaggi/Linguaggio_di_programmazione_ad_alto_livello.txt
+       Un [linguaggio di programmazione] ad alto livello, in informatica, è un [linguaggio di programmazione] caratterizzato da una significativa astrazione dai dettagli del funzionamento di un calcolatore e dalle caratteristic...
+  8. [7,946] altro/Microsoft_Visual_Studio.txt
+       Permette di usare svariati [linguaggi di programmazione], tra cui VB.NET, C#, C++ e altri ancora. ... Permette di usare svariati [linguaggi di programmazione], tra cui VB.NET, C++, C# e altri ancora.
+  9. [7,888] linguaggi/Vala_(linguaggio_di_programmazione).txt
+       Vala è un [linguaggio di programmazione] di alto livello, orientato ad oggetti. ... Esiste un dialetto del linguaggio in stile [Python] chiamato Genie.
+ 10. [7,668] altro/Anjuta.txt
+       Anjuta è un ambiente di sviluppo integrato per i [linguaggi di programmazione] C, C++, Java e [Python] scritto per il progetto GNOME.
+
+================================================================
+Q12: contenuto dell'imperatore Adriano
+================================================================
+Query Lucene: contenuto:imperator contenuto:adrian
+829 documenti trovati in 1,40 ms
+  1. [5,273] imperatori/Adriano.txt
+       Cesare Traiano [Adriano] Augusto, nato Publio Elio [Adriano] (in latino Caesar Traianus Hadrianus Augustus; Italica, 24 gennaio 76 – Baia, 10 luglio 138), è stato un [imperatore] romano, il terzo della dinastia degli [im...
+  2. [5,231] altro/Vibia_Sabina.txt
+       Vibia Sabina (86 circa – 136-137) fu Augusta dell'Impero romano, moglie [dell'imperatore] [Adriano]. ... La villa nota come Villa [Adriana] a Tivoli era di sua proprietà, e [l'imperatore] [Adriano] vi trascorreva le esta...
+  3. [5,009] altro/Salonia_Matidia.txt
+       Salonia Matidia (4 luglio 68 – 23 dicembre 119) fu nipote [dell'imperatore] romano Traiano e suocera [dell'imperatore] [Adriano], e bisnonna paterna [dell'imperatore] Marco Aurelio. ... Alla sua morte nel 119, un riconos...
+  4. [4,970] imperatori/Imperatori_adottivi.txt
+       Gli [imperatori] erano comunque imparentati tra loro più o meno alla lontana e questi legami familiari includono anche le famiglie di Traiano (della gens Ulpia) e di [Adriano] (della gens Elia). ... Lo stesso argomento i...
+  5. [4,917] altro/Plotina.txt
+       Plotina protesse il futuro [imperatore] [Adriano] che, rimasto orfano del padre all'età di dieci anni, entrò sotto la tutela di Traiano. ... Historia Augusta, [Adriano].
+  6. [4,901] altro/Vibia_Matidia.txt
+       Sua sorella Vibia Sabina sposò [l'imperatore] [Adriano]. ... Anna Maria Reggiani (a cura di), [Adriano].
+  7. [4,869] altro/Ritratto_di_Adriano.txt
+       Il ritratto di [Adriano] del Museo Nazionale Romano di Roma è, secondo lo storico dell'arte Ranuccio Bianchi Bandinelli, una delle più belle e fresche repliche del ritratto ufficiale [dell'imperatore], eseguito dopo la s...
+  8. [4,763] imperatori/Lucio_Vero.txt
+       Era figlio di Lucio Elio Cesare, uomo molto vicino [all'imperatore] [Adriano] e sua prima scelta come successore, attraverso la moglie Avidia. ... Nell'estate del 136 [Adriano] rischiò di morire per emorragia.
+  9. [4,736] imperatori/Antonino_Pio.txt
+       Cesare Tito Elio [Adriano] Antonino Augusto Pio, nato Tito Aurelio Fulvo Boionio Arrio Antonino e meglio noto semplicemente come Antonino Pio (in latino Caesar Titus Aelius Hadrianus Antoninus Augustus Pius; Lanuvio, 19 ...
+ 10. [4,706] castelli/Castel_Sant'Angelo.txt
+       Il tumulo era infine sormontato da una gigantesca quadriga in bronzo guidata [dall'imperatore] [Adriano], raffigurato come il sole posto su un alto basamento o, secondo altri, su una tholos circolare. ... Il Mausoleo osp...
+
+================================================================
+Q13: contenuto perché scacco matto
+================================================================
+Query Lucene: contenuto:scacc contenuto:matto
+461 documenti trovati in 1,98 ms
+  1. [7,155] scacchi/Matto_dell'imbecille.txt
+       Il [matto] dell'imbecille, conosciuto anche come [matto] dello stolto, è una trappola d'apertura scacchistica, e consiste nello [scacco] [matto] più veloce possibile nel gioco degli [scacchi]. ... Ancora più in generale,...
+  2. [7,001] scacchi/Matto_del_barbiere.txt
+       Consiste in un particolare [scacco] [matto] che avviene dopo poche mosse, in cui spesso incappano i principianti. ... Ugo Pasquinelli, ABC del gioco degli [scacchi], Milano, Hoepli, 1987, p. 45, ISBN 88-203-0001X, SBN FO...
+  3. [6,985] scacchi/Scacco_matto.txt
+       L'etimo del termine [scacco] [matto] è incerto. ... [Scacco] al re [Matto] del barbiere [Matto] del corridoio [Matto] dell'imbecille [Matto] della libellula [Matto] delle spalline Altri progetti Wikiquote Wikimedia Commo...
+  4. [6,930] scacchi/Matto_di_Budapest.txt
+       Il [Matto] di Budapest è una tipica trappola d'apertura scacchistica, che consiste in uno [scacco] [matto] in poche mosse. ... Questo tipo di [scacco] [matto] si chiama [matto] affogato.
+  5. [6,826] scacchi/Matto_di_Légal.txt
+       Il [matto] di Légal, detto anche [matto] di Blackburn nei paesi anglosassoni, è una trappola d'apertura scacchistica e consiste in uno [scacco] [matto] simile a quello della partita Légal-Saint Brie giocata a Parigi nel ...
+  6. [6,722] altro/Problema_di_scacchi.txt
+       È ovviamente illegale dare [scacco] e catturare il re, si può però concludere la serie con lo [scacco] (S seguito dall'enunciato normale, esempio S numero 5: il Bianco dà [matto] giocando 5 mosse di seguito). ... Element...
+  7. [6,663] scacchi/Patta_(scacchi).txt
+       Secondo il regolamento degli [scacchi] in caso di tempo esaurito o di abbandono il gioco termina in parità solo quando non sia possibile effettuare [scacco] [matto] neanche a seguito della più sfavorevole sequenza di mos...
+  8. [6,508] altro/Scacchi_eterodossi.txt
+       Gli [scacchi] eterodossi (o varianti scacchistiche) sono modalità di gioco basate sugli [scacchi], ma con un certo numero di cambiamenti. ... Lo stesso argomento in dettaglio: [Scacc]
+  9. [6,472] scacchi/Gambetto_From.txt
+       Txh4, 7 gxh4 Dxh4# ([matto]). ... Portale [Scacchi]: accedi alle voci di Wikipedia che trattano di [scacchi]
+ 10. [6,373] altro/Re_(scacchi).txt
+       Se non è possibile rimediare, è [scacco] [matto], ovvero vittoria per l'altro giocatore. ... In alcune situazioni, il pezzo può essere attivamente partecipe persino di uno [scacco] [matto].
+
+================================================================
+Q14: titolo lucene
+================================================================
+Errore: La query deve iniziare con 'nome' o 'contenuto' (trovato: 'titolo').
+
+================================================================
+Q15: contenuto il di che
+================================================================
+Errore: Nessun termine significativo (forse solo stopword?).

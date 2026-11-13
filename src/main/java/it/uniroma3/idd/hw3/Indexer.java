@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.text.Normalizer;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import org.apache.lucene.document.Document;
@@ -49,7 +50,14 @@ public final class Indexer {
     private Indexer() {
     }
 
+    /** Chiave con cui il profilo degli analyzer viene salvato nei metadati dell'indice. */
+    public static final String COMMIT_KEY_PROFILE = "analyzer-profile";
+
     public static Stats index(Path docsDir, Path indexDir) throws IOException {
+        return index(docsDir, indexDir, Analyzers.PROFILE_ITALIANO);
+    }
+
+    public static Stats index(Path docsDir, Path indexDir, String profile) throws IOException {
         if (!Files.isDirectory(docsDir)) {
             throw new IOException("La directory dei documenti non esiste: " + docsDir);
         }
@@ -61,7 +69,7 @@ public final class Indexer {
                     .toList();
         }
 
-        IndexWriterConfig config = new IndexWriterConfig(Analyzers.perField());
+        IndexWriterConfig config = new IndexWriterConfig(Analyzers.perField(profile));
         // Ricrea l'indice da zero a ogni esecuzione (niente duplicati se si rilancia).
         config.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
 
@@ -76,6 +84,8 @@ public final class Indexer {
                 writer.addDocument(toDocument(docsDir.relativize(file), content));
             }
             afterAdd = System.nanoTime();
+            // Il profilo usato viene scritto nell'indice: chi interroga userà gli stessi analyzer.
+            writer.setLiveCommitData(Map.of(COMMIT_KEY_PROFILE, profile).entrySet());
             writer.commit();
         }
         long end = System.nanoTime();

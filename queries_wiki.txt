@@ -1,0 +1,19 @@
+# Query di test sul corpus di Wikipedia (corpus_wiki): una per riga, le righe con # sono commenti.
+# --- campo nome ---
+nome vesuvio
+nome castello aragonese
+nome "isola di"
+nome carbonara
+nome +lago -bolsena
+nome nobel
+# --- campo contenuto ---
+contenuto "seconda guerra mondiale"
+contenuto città eterna
+contenuto vulcano eruzione lava
+contenuto +formaggio +pecora -stagionato
+contenuto "linguaggio di programmazione" python
+contenuto dell'imperatore Adriano
+contenuto perché scacco matto
+# --- casi di errore ---
+titolo lucene
+contenuto il di che
