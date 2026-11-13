@@ -80,7 +80,9 @@ anche «di»). Il prezzo è che singolare e plurale restano distinti; l'effetto 
   <li><b>StandardTokenizer</b>: segmentazione in parole secondo le regole Unicode;</li>
   <li><b>ElisionFilter</b>: toglie gli articoli con apostrofo (<code>l'eruzione → eruzione</code>, <code>dell'Italia → Italia</code>);</li>
   <li><b>LowerCaseFilter</b>;</li>
-  <li><b>StopFilter</b> con le stopword italiane di Lucene (<code>il, di, che, perché…</code>): sono in quasi tutti i documenti e non aiutano a distinguerli;</li>
+  <li><b>StopFilter</b> con le stopword italiane di Lucene (<code>il, di, che, perché…</code>): sono in quasi tutti i documenti e non aiutano a distinguerli.
+      Il costo è nelle phrase query, dove le stopword non vengono controllate: <code>"premio nobel per la fisica"</code> diventa
+      <code>"prem nobel ? ? fisic"</code>, cioè accetta due parole qualsiasi al posto di «per la»;</li>
   <li><b>ASCIIFoldingFilter</b> (aggiunto da me): <code>città → citta</code>, così la ricerca funziona con o senza accento;</li>
   <li><b>ItalianLightStemFilter</b>: stemming leggero, che riporta alla stessa radice singolare e plurale, maschile e femminile
       (<code>vulcano, vulcani → vulcan</code>).</li>
@@ -182,7 +184,7 @@ quindi il riferimento in modo automatico e <b>senza usare Lucene</b>, con tre cr
 <h3>Metriche</h3>
 <p>Per ogni query il comando <code>eval</code> recupera l'intero insieme dei risultati (non solo i primi 10) e calcola:
 <b>precision</b> P (frazione dei restituiti che sono rilevanti), <b>recall</b> R (frazione dei rilevanti che sono restituiti), <b>F1</b>,
-<b>P@10</b> (precision sui primi 10), <b>R@100</b> (recall sui primi 100) e <b>average precision</b> AP (media delle precision misurate
+<b>P@10</b> (rilevanti fra i primi 10, diviso 10), <b>R@100</b> (recall sui primi 100) e <b>average precision</b> AP (media delle precision misurate
 a ogni rilevante trovato, che premia chi mette i rilevanti in alto). La media delle AP è la MAP.</p>
 
 <h3>Risultati con gli analyzer scelti (6.323 documenti)</h3>
@@ -219,7 +221,8 @@ a ogni rilevante trovato, che premia chi mette i rilevanti in alto). La media de
   <li><b>C8 mostra il limite dello stemmer leggero</b>: con <code>+razza +cane</code> obbligatori si perdono 41 voci su razze canine (recall 0,896).
       Ho controllato alcune di queste: in «Border terrier», ad esempio, c'è «razza» ma al posto di «cane» compaiono solo «cani» e «canina».
       Le parole con meno di 6 lettere non vengono ridotte alla radice, quindi «cane» e «cani» sono termini diversi.</li>
-  <li><b>Phrase query.</b> Precision e recall sono 1: lo stemming fa trovare anche «linguaggi di programmazione» e «denominazioni di origine protette».</li>
+  <li><b>Phrase query.</b> Funzionano perché Lucene salva nell'indice anche la posizione di ogni termine (indice posizionale) e
+      controlla che i termini siano consecutivi. Precision e recall sono 1: lo stemming fa trovare anche «linguaggi di programmazione» e «denominazioni di origine protette».</li>
   <li><b>Nome.</b> N1 perde 5 file su 313 che nel titolo hanno solo il plurale «Castelli» (nessuno stemming sul nome); N5 perde «Isola d'Ischia»,
       perché la frase cercata è «isola di». In N4 i 5 file rilevanti sono tutti restituiti e stanno nelle prime 6 posizioni (AP 0,967), ma l'OR
       restituisce anche 9 file che hanno solo «Vesuvio» o solo «eruzione» (P 0,357).</li>
@@ -231,7 +234,7 @@ entrambi i campi e con lo stemmer Snowball al posto di quello leggero. Le query 
 <table>
   <tr><th>Gruppo di query</th><th>Analyzer</th><th class="n">P</th><th class="n">R</th><th class="n">F1</th><th class="n">P@10</th><th class="n">AP (MAP)</th></tr>
   <tr><td rowspan="2">Nome (5 query)</td><td>scelto (su misura)</td><td class="n">0,871</td><td class="n">0,986</td><td class="n">0,898</td><td class="n">0,900</td><td class="n">0,980</td></tr>
-  <tr><td>StandardAnalyzer</td><td class="n">0,200</td><td class="n">0,010</td><td class="n">0,018</td><td class="n">0,200</td><td class="n">0,010</td></tr>
+  <tr><td>StandardAnalyzer</td><td class="n">0,200</td><td class="n">0,010</td><td class="n">0,018</td><td class="n">0,020</td><td class="n">0,010</td></tr>
   <tr><td rowspan="3">Contenuto (12 query)</td><td>scelto (stemmer leggero)</td><td class="n">0,644</td><td class="n">0,984</td><td class="n">0,723</td><td class="n">0,967</td><td class="n">0,911</td></tr>
   <tr><td>stemmer Snowball</td><td class="n">0,597</td><td class="n">0,993</td><td class="n">0,673</td><td class="n">0,967</td><td class="n">0,917</td></tr>
   <tr><td>StandardAnalyzer</td><td class="n">0,683</td><td class="n">0,955</td><td class="n">0,750</td><td class="n">0,983</td><td class="n">0,882</td></tr>

@@ -84,7 +84,7 @@ class Hw3Test {
         assertEquals(2, m.hits());
         assertEquals(0.5, m.precision(), 1e-9);
         assertEquals(2.0 / 3, m.recall(), 1e-9);
-        assertEquals(0.5, m.pAt10(), 1e-9);
+        assertEquals(0.2, m.pAt10(), 1e-9);   // 2 rilevanti nei primi 10, diviso 10
         assertEquals((1.0 + 2.0 / 3) / 3, m.avgPrecision(), 1e-9);
     }
 

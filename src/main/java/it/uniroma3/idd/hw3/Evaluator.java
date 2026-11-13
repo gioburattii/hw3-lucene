@@ -36,7 +36,7 @@ public final class Evaluator {
      * @param precision    hits / retrieved, sull'intero insieme dei risultati
      * @param recall       hits / relevant, sull'intero insieme dei risultati
      * @param f1           media armonica di precision e recall
-     * @param pAt10        precision sui primi 10 risultati
+     * @param pAt10        precision sui primi 10 risultati (rilevanti nei primi 10, diviso 10)
      * @param rAt100       recall sui primi 100 risultati
      * @param avgPrecision average precision: media delle precision misurate a ogni documento
      *                     rilevante trovato (0 per quelli non trovati); premia chi mette i rilevanti in alto
@@ -68,8 +68,8 @@ public final class Evaluator {
         double precision = ranked.isEmpty() ? 0 : (double) hits / ranked.size();
         double recall = relevant.isEmpty() ? 0 : (double) hits / relevant.size();
         double f1 = precision + recall == 0 ? 0 : 2 * precision * recall / (precision + recall);
-        // P@10: se i risultati sono meno di 10 si divide per quelli effettivamente restituiti.
-        double pAt10 = ranked.isEmpty() ? 0 : (double) hitsAt10 / Math.min(10, ranked.size());
+        // P@10: rilevanti fra i primi 10, diviso sempre per 10 (anche se i risultati sono meno).
+        double pAt10 = hitsAt10 / 10.0;
         double rAt100 = relevant.isEmpty() ? 0 : (double) hitsAt100 / relevant.size();
         double ap = relevant.isEmpty() ? 0 : sumPrecision / relevant.size();
         return new Metrics(ranked.size(), relevant.size(), hits, precision, recall, f1, pAt10, rAt100, ap);

@@ -7,7 +7,7 @@ N1   nome castello                                              0     313       
 N2   nome lago                                                  0      18       0   0.000   0.000   0.000   0.000   0.000   0.000
        primi falsi positivi: []
        rilevanti non trovati: [altro/Lago_Crater.txt, altro/Lago_Fusaro.txt, altro/Lago_Taupo.txt, altro/Lago_di_Bientina.txt, altro/Lago_di_Bolsena.txt]
-N3   nome pecorino                                              1      21       1   1.000   0.048   0.091   1.000   0.048   0.048
+N3   nome pecorino                                              1      21       1   1.000   0.048   0.091   0.100   0.048   0.048
        primi falsi positivi: []
        rilevanti non trovati: [formaggi/Pecorino_bagnolese.txt, formaggi/Pecorino_crotonese.txt, formaggi/Pecorino_d'Abruzzo.txt, formaggi/Pecorino_del_Monte_Poro.txt, formaggi/Pecorino_del_pastore.txt]
 N4   nome eruzione vesuvio                                      1       5       0   0.000   0.000   0.000   0.000   0.000   0.000
@@ -52,4 +52,4 @@ F3   contenuto "linguaggio di programmazione"                  90     108      9
 F4   contenuto "denominazione di origine protetta"             61      66      61   1.000   0.924   0.961   1.000   0.924   0.924
        primi falsi positivi: []
        rilevanti non trovati: [dolci/Baklava.txt, dolci/Ricciarelli.txt, formaggi/Formaggio_di_fossa_di_Sogliano.txt, primi_piatti/Carnikavas_nēģi.txt, primi_piatti/Maultaschen.txt]
-     MEDIA su 17 query (AP medio = MAP)                                             0.541   0.677   0.535   0.753   0.323   0.625
+     MEDIA su 17 query (AP medio = MAP)                                             0.541   0.677   0.535   0.700   0.323   0.625
