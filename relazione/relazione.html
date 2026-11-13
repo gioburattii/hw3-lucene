@@ -44,19 +44,19 @@ facoltativi (in OR), una <code>"frase tra virgolette"</code> è una phrase query
 <code>-termine</code> un termine da escludere. I risultati sono ordinati con BM25, il ranking predefinito di Lucene.</p>
 
 <h2>2. Analyzer</h2>
-<p>Per i due campi sono stati usati analyzer diversi, perché il nome di un file e il testo di un documento hanno caratteristiche diverse.
+<p>Per i due campi ho usato analyzer diversi, perché il nome di un file e il testo di un documento hanno caratteristiche diverse.
 In entrambi i casi lo stesso analyzer è usato sia in indicizzazione sia in ricerca.</p>
 
 <h3>Campo nome</h3>
 <p>Nei nomi dei file le parole sono spesso unite da underscore o trattini, oppure scritte attaccate con le maiuscole (camelCase).
 Lo <code>StandardAnalyzer</code> non separa le parole unite da underscore, quindi un nome come <code>Castello_di_Sant'Angelo</code>
-resterebbe un unico token. Per questo è stato definito un analyzer apposito, composto da:</p>
+resterebbe un unico token. Per questo ho definito un analyzer apposito, composto da:</p>
 <ul>
   <li>un tokenizer che divide il nome su tutti i caratteri che non sono lettere o cifre;</li>
   <li><code>WordDelimiterGraphFilter</code>, che separa le parole in camelCase e le lettere dai numeri;</li>
   <li><code>LowerCaseFilter</code> e <code>ASCIIFoldingFilter</code>, per ignorare maiuscole e accenti.</li>
 </ul>
-<p>Non sono state usate stopword né stemming, perché un nome è breve e ogni parola è utile.</p>
+<p>Non ho usato stopword né stemming, perché un nome è breve e ogni parola è utile.</p>
 <table>
   <tr><th>Nome del file</th><th>Token prodotti</th></tr>
   <tr><td><code>Castello_di_Sant'Angelo.txt</code></td><td><code>castello, di, sant, angelo</code></td></tr>
@@ -65,22 +65,22 @@ resterebbe un unico token. Per questo è stato definito un analyzer apposito, co
 </table>
 
 <h3>Campo contenuto</h3>
-<p>I documenti sono in italiano, quindi l'analyzer segue la struttura dell'<code>ItalianAnalyzer</code> di Lucene:</p>
+<p>I documenti sono in italiano, quindi ho preso come base l'<code>ItalianAnalyzer</code> di Lucene:</p>
 <ul>
   <li><code>StandardTokenizer</code>, che divide il testo in parole;</li>
   <li><code>ElisionFilter</code>, che toglie gli articoli con apostrofo (l'eruzione diventa eruzione);</li>
   <li><code>LowerCaseFilter</code>;</li>
   <li><code>StopFilter</code> con le stopword italiane (il, di, che...), parole molto frequenti che non aiutano a distinguere i documenti;</li>
-  <li><code>ASCIIFoldingFilter</code>, aggiunto per poter cercare "citta" e trovare "città";</li>
+  <li><code>ASCIIFoldingFilter</code>, che ho aggiunto per poter cercare "citta" e trovare "città";</li>
   <li><code>ItalianLightStemFilter</code>, che riporta singolare e plurale alla stessa radice (vulcano e vulcani diventano vulcan).</li>
 </ul>
 <p>Ad esempio la frase "L'eruzione dei vulcani più attivi dell'Italia" produce i token <code>eruzion, vulcan, attiv, ital</code>.</p>
 
 <h2>3. Dataset</h2>
-<p>Il sistema è stato provato prima su 23 file di prova e poi su un insieme più grande, formato da <b>6.323 voci di Wikipedia in italiano</b>
-(51,9 MB di testo). Wikipedia è stata scelta perché i testi sono in italiano, i titoli delle voci sono adatti come nomi di file e ogni voce
+<p>Ho provato il sistema prima su 23 file di prova e poi su un insieme più grande, formato da <b>6.323 voci di Wikipedia in italiano</b>
+(51,9 MB di testo). Ho scelto Wikipedia perché i testi sono in italiano, i titoli delle voci sono adatti come nomi di file e ogni voce
 ha delle categorie, utili per la valutazione.</p>
-<p>I file sono stati creati con lo script <code>scripts/build_corpus.py</code>, in due passi:</p>
+<p>Ho creato i file con lo script <code>scripts/build_corpus.py</code>, in due passi:</p>
 <ol>
   <li>lo script scarica tramite l'API di Wikipedia fino a 400 voci per ciascuna di 17 categorie (vulcani, primi piatti, pittori italiani
       del XVI secolo, razze canine, imperatori romani, scacchi, formaggi, dinosauri, castelli, vini, tennisti e altre);</li>
@@ -102,7 +102,7 @@ si può ricreare con lo script; l'elenco delle voci usate è nel file <code>valu
 
 <h2>4. File indicizzati e tempi di indicizzazione</h2>
 <p>Il tempo comprende la lettura dei file, l'analisi
-e la scrittura dell'indice. Per vedere come cambia il tempo al crescere dei documenti, l'indicizzazione è stata ripetuta anche su
+e la scrittura dell'indice. Per vedere come cambia il tempo al crescere dei documenti, ho ripetuto l'indicizzazione anche su
 sottoinsiemi casuali del corpus (script <code>scripts/tempi.py</code>). Ogni valore è la mediana di 5 prove.</p>
 <table>
   <tr><th>Corpus</th><th class="n">File</th><th class="n">Dimensione</th><th class="n">Tempo di indicizzazione</th><th class="n">File al secondo</th></tr>
@@ -143,8 +143,8 @@ o una frase tra virgolette.</p>
 <h2>6. Valutazione</h2>
 <h3>Documenti rilevanti</h3>
 <p>Per calcolare la recall bisogna conoscere, per ogni query, tutti i documenti rilevanti presenti nel corpus. Con più di seimila file non
-è possibile controllarli a mano, quindi i documenti rilevanti sono stati stabiliti con lo script <code>scripts/build_gold.py</code>,
-che non usa Lucene. Sono stati usati tre criteri:</p>
+è possibile controllarli a mano, quindi ho stabilito i documenti rilevanti con lo script <code>scripts/build_gold.py</code>,
+che non usa Lucene. Ho usato tre criteri:</p>
 <ul>
   <li>per le query su un argomento (C1-C8) sono rilevanti i file della cartella di quell'argomento. Ad esempio per la query
       <code>contenuto vulcano eruzione lava cratere</code> sono rilevanti i 214 file della cartella <code>vulcani</code>;</li>
@@ -153,7 +153,7 @@ che non usa Lucene. Sono stati usati tre criteri:</p>
 </ul>
 
 <h3>Metriche</h3>
-<p>Per ogni query sono state calcolate precision (P), recall (R) e F1 su tutti i documenti restituiti, la precision sui primi 10 risultati
+<p>Per ogni query ho calcolato precision (P), recall (R) e F1 su tutti i documenti restituiti, la precision sui primi 10 risultati
 (P@10) e l'average precision (AP), che tiene conto della posizione dei documenti rilevanti nella classifica. La media delle AP è la MAP.</p>
 
 <h3>Risultati</h3>
@@ -193,7 +193,7 @@ che non usa Lucene. Sono stati usati tre criteri:</p>
 </ul>
 
 <h3>Confronto con altri analyzer</h3>
-<p>Per verificare le scelte fatte, lo stesso corpus è stato indicizzato anche con lo <code>StandardAnalyzer</code> su entrambi i campi
+<p>Per verificare le scelte fatte, ho indicizzato lo stesso corpus anche con lo <code>StandardAnalyzer</code> su entrambi i campi
 e con lo stemmer Snowball al posto di quello leggero. Query e documenti rilevanti sono gli stessi.</p>
 <table>
   <tr><th>Query</th><th>Analyzer</th><th class="n">P</th><th class="n">R</th><th class="n">F1</th><th class="n">P@10</th><th class="n">MAP</th></tr>
@@ -207,7 +207,7 @@ e con lo stemmer Snowball al posto di quello leggero. Query e documenti rilevant
   <li>Con lo StandardAnalyzer la ricerca sul nome non funziona (recall 0,01), perché i titoli con gli underscore restano un unico token.</li>
   <li>Sul contenuto lo StandardAnalyzer, che non fa stemming, ha una recall più bassa (0,955 contro 0,984).</li>
   <li>Lo stemmer Snowball riduce anche le parole corte e aumenta la recall, ma unisce parole diverse: "partita", "parte" e "partire"
-      diventano tutte "part". Nella query C3 i documenti restituiti passano da 1.072 a 3.956 e la precision scende. Per questo è stato
+      diventano tutte "part". Nella query C3 i documenti restituiti passano da 1.072 a 3.956 e la precision scende. Per questo ho
       mantenuto lo stemmer leggero.</li>
 </ul>
 
