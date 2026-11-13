@@ -102,15 +102,20 @@ si può ricreare con lo script; l'elenco delle voci usate è nel file <code>valu
 
 <h2>4. File indicizzati e tempi di indicizzazione</h2>
 <p>Le prove sono state eseguite su un portatile con processore Apple M4 e 16 GB di RAM. Il tempo comprende la lettura dei file, l'analisi
-e la scrittura dell'indice.</p>
+e la scrittura dell'indice. Per vedere come cambia il tempo al crescere dei documenti, l'indicizzazione è stata ripetuta anche su
+sottoinsiemi casuali del corpus (script <code>scripts/tempi.py</code>). Ogni valore è la mediana di 5 prove.</p>
 <table>
-  <tr><th>Corpus</th><th class="n">File</th><th class="n">Dimensione</th><th class="n">Tempo di indicizzazione</th><th class="n">Dimensione dell'indice</th></tr>
-  <tr><td>Wikipedia</td><td class="n">6.323</td><td class="n">51,9 MB</td><td class="n">2,56 s (mediana di 5 prove)</td><td class="n">48 MB</td></tr>
-  <tr><td>File di prova</td><td class="n">23</td><td class="n">0,01 MB</td><td class="n">0,11 s</td><td class="n">28 KB</td></tr>
+  <tr><th>Corpus</th><th class="n">File</th><th class="n">Dimensione</th><th class="n">Tempo di indicizzazione</th><th class="n">File al secondo</th></tr>
+  <tr><td>Wikipedia, sottoinsieme</td><td class="n">1.000</td><td class="n">7,8 MB</td><td class="n">0,72 s</td><td class="n">1.400</td></tr>
+  <tr><td>Wikipedia, sottoinsieme</td><td class="n">2.500</td><td class="n">20,5 MB</td><td class="n">1,23 s</td><td class="n">2.030</td></tr>
+  <tr><td>Wikipedia, sottoinsieme</td><td class="n">5.000</td><td class="n">40,6 MB</td><td class="n">2,16 s</td><td class="n">2.310</td></tr>
+  <tr><td>Wikipedia, completo</td><td class="n">6.323</td><td class="n">51,9 MB</td><td class="n">2,51 s</td><td class="n">2.520</td></tr>
+  <tr><td>File di prova</td><td class="n">23</td><td class="n">0,01 MB</td><td class="n">0,11 s</td><td class="n">-</td></tr>
 </table>
-<p>Sul corpus di Wikipedia la velocità è di circa 2.470 file al secondo. Le cinque prove hanno dato tempi tra 2,55 e 3,08 secondi; la prima
-è la più lenta perché i file non sono ancora nella cache del sistema operativo. L'indice occupa quasi quanto i testi perché il contenuto
-viene anche memorizzato, per poter mostrare un estratto nei risultati. Le ricerche richiedono pochi millisecondi.</p>
+<p>Il tempo cresce in modo quasi lineare con il numero di file: passando da 2.500 a 5.000 file aumenta di circa 0,9 secondi. Sui
+sottoinsiemi piccoli la velocità è più bassa perché i costi iniziali pesano di più. Con il corpus completo le cinque prove hanno dato
+tempi tra 2,41 e 2,62 secondi e l'indice occupa 48 MB, quasi quanto i testi, perché il contenuto viene anche memorizzato per poter
+mostrare un estratto nei risultati. Le ricerche richiedono pochi millisecondi.</p>
 
 <h2>5. Query di test</h2>
 <p>Le query sono nel file <code>queries_wiki.txt</code> e i risultati completi in <code>risultati_query_wiki.txt</code>.</p>
